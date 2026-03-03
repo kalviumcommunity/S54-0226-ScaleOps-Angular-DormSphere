@@ -65,7 +65,7 @@ From the root folder:
 docker-compose up --build
 ```
 
-This will 
+This will: 
 * Start the PostgreSQL container
 * Build and start Rust backend container
 * Connect backend to database automatically
@@ -86,7 +86,7 @@ Health check:
 http://localhost:8000/health
 ```
 
-## 5️⃣ Start the Frontend (Angular)
+## 4️⃣ Start the Frontend (Angular)
 
 Open a new terminal:
 

@@ -33,5 +33,5 @@ async fn main() {
 
     axum::serve(listener, app)
         .await
-        .unwrap();
+        .expect("Failed to bind to address");
 }
