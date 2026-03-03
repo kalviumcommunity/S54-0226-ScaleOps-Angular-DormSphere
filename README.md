@@ -34,7 +34,6 @@ Make sure you have installed:
 
 * Node.js (LTS version)
 * Angular CLI
-* Rust
 * Docker Desktop
 * Git
 
@@ -44,8 +43,6 @@ Check installation:
 node -v
 npm -v
 ng version
-rustc --version
-cargo --version
 docker --version
 ```
 
@@ -55,53 +52,47 @@ docker --version
 
 ```bash
 git clone https://github.com/kalviumcommunity/S54-0226-ScaleOps-Angular-DormSphere.git
+cd S54-0226-ScaleOps-Angular-DormSphere
 ```
 
 ---
 
-## 3️⃣ Start PostgreSQL (Docker)
+## 3️⃣ Start Backend & Database (Docker)
 
 From the root folder:
 
 ```bash
-docker-compose up -d
+docker-compose up --build
 ```
 
-This will start the PostgreSQL database on:
+This will: 
+* Start the PostgreSQL container
+* Build and start Rust backend container
+* Connect backend to database automatically
 
 ```
 localhost:5432
 ```
 
----
-
-## 4️⃣ Start the Backend (Rust)
-
-```bash
-cd backend
-cargo run
-```
 
 Backend will run on:
 
 ```
 http://localhost:8000
 ```
-
-You should see:
+Health check:
 
 ```
-Hostel Management API Running
+http://localhost:8000/health
 ```
 
----
-
-## 5️⃣ Start the Frontend (Angular)
+## 4️⃣ Start the Frontend (Angular)
 
 Open a new terminal:
 
 ```bash
-cd frontend
+cd dormsphere
+npm install
 ng serve
 ```
 
@@ -117,7 +108,7 @@ http://localhost:4200
 
 ```
 ├── dormsphere/        # Angular application
-├── backend/         # Rust API server
+├── backend/         # Rust API server (Dockerized)
 ├── docker-compose.yml
 ├── README.md
 ```
