@@ -18,6 +18,6 @@ pub struct CreateHostel {
 #[derive(serde::Deserialize)]
 pub struct UpdateHostel {
     pub name: Option<String>,
-    pub location: Option<String>,
-    pub total_capacity: Option<i32>,
+    pub location: Option<Option<String>>,
+    pub total_capacity: Option<Option<i32>>,
 }
