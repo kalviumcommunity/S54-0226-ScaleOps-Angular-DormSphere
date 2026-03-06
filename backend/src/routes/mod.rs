@@ -14,7 +14,8 @@ pub fn create_routes(pool: PgPool) -> Router {
         .route("/api/hostels", post(hostels::create_hostel))
         .route(
             "/api/hostels/:id",
-            put(hostels::update_hostel).delete(hostels::delete_hostel),
+            put(hostels::update_hostel)
         )
+        .route("/api/hostels/:id", delete(hostels::delete_hostel))
         .with_state(pool)
 }
