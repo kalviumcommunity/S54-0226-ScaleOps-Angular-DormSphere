@@ -25,7 +25,6 @@
 				<button
 					class="bg-primary flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
 					style="
-						background-color: #059467;
 						--tw-shadow-color: rgba(5, 148, 103, 0.2);
 						box-shadow: 0 10px 15px -3px var(--tw-shadow-color);
 					"
@@ -47,6 +46,7 @@
 						>
 						<input
 							class="focus:ring-primary focus:border-primary w-full rounded-lg border-slate-200 bg-slate-50 py-2.5 pr-4 pl-10 text-sm dark:border-slate-700 dark:bg-slate-800"
+							aria-label="Search hostels"
 							placeholder="Search by name, location, or warden..."
 							type="text"
 						/>
@@ -74,7 +74,6 @@
 
 					<button
 						class="text-primary hover:bg-primary/5 rounded-lg px-3 py-2 text-sm font-semibold"
-						style="color: #059467"
 						type="button"
 					>
 						Reset Filters
@@ -345,13 +344,13 @@
 				<div class="flex gap-2">
 					<button
 						class="text-slate-400 border-slate-200 cursor-not-allowed rounded border bg-white px-3 py-1 text-sm dark:border-slate-700 dark:bg-slate-800"
+						disabled
 						type="button"
 					>
 						Previous
 					</button>
 					<button
 						class="bg-primary border-primary rounded border px-3 py-1 text-sm font-medium text-white"
-						style="background-color: #059467; border-color: #059467"
 						type="button"
 					>
 						1
