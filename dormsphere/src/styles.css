@@ -1,3 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+
+@theme {
+	--color-primary: #059467;
+	--color-background-light: #ffffff;
+	--color-background-dark: #101022;
+	--font-display: 'Inter', sans-serif;
+}
+
+.material-symbols-outlined {
+	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
