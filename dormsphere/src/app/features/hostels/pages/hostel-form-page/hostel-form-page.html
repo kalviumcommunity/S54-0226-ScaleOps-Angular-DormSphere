@@ -3,8 +3,14 @@
 
   <main class="mx-auto w-full max-w-4xl flex-1 px-6 py-8">
     <div class="mb-8">
-      <h1 class="text-3xl font-extrabold tracking-tight">Add New Hostel</h1>
-      <p class="text-slate-500 mt-1">Create a new hostel and make it available in the Hostels list and detail flow.</p>
+      <h1 class="text-3xl font-extrabold tracking-tight">{{ isEditMode() ? 'Edit Hostel' : 'Add New Hostel' }}</h1>
+      <p class="text-slate-500 mt-1">
+        {{
+          isEditMode()
+            ? 'Update hostel details and keep the existing record up to date.'
+            : 'Create a new hostel and make it available in the Hostels list and detail flow.'
+        }}
+      </p>
     </div>
 
     <form
@@ -82,6 +88,7 @@
           <input
             class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
             formControlName="capacity"
+            min="1"
             type="number"
           />
         </label>
@@ -91,10 +98,18 @@
           <input
             class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
             formControlName="occupiedBeds"
+            min="0"
+            [attr.max]="form.controls.capacity.value"
             type="number"
           />
         </label>
       </div>
+
+      @if (form.hasError('occupiedBedsExceedsCapacity') && (form.dirty || form.touched)) {
+        <p class="mt-4 text-sm font-medium text-red-600 dark:text-red-400">
+          Occupied beds cannot be greater than total capacity.
+        </p>
+      }
 
       <div class="mt-8 flex flex-wrap gap-3">
         <button
@@ -102,7 +117,7 @@
           type="submit"
         >
           <span class="material-symbols-outlined text-lg">save</span>
-          Save Hostel
+          {{ isEditMode() ? 'Update Hostel' : 'Save Hostel' }}
         </button>
 
         <a

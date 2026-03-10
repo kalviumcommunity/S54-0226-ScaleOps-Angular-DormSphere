@@ -21,7 +21,8 @@ export class HostelList {
       return 0;
     }
 
-    return Math.round((hostel.occupiedBeds / hostel.capacity) * 100);
+    const value = Math.round((hostel.occupiedBeds / hostel.capacity) * 100);
+    return Math.min(Math.max(value, 0), 100);
   }
 
   occupancyBarClass(hostel: Hostel): string {

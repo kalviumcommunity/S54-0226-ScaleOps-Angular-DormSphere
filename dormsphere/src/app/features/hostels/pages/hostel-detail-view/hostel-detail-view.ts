@@ -241,22 +241,19 @@ export class HostelDetailView {
 
   private buildTrack(occupancyPct: number): Array<'ok' | 'warn' | 'full'> {
     const slots = 5;
-    const filled = Math.round((occupancyPct / 100) * slots);
+    const normalizedPct = Math.min(Math.max(occupancyPct, 0), 100);
+    const filled = Math.round((normalizedPct / 100) * slots);
 
     return Array.from({ length: slots }, (_, idx) => {
-      if (idx >= filled) {
-        return 'full';
+      if (idx < filled) {
+        if (normalizedPct >= 95 && idx === filled - 1) {
+          return 'warn';
+        }
+
+        return 'ok';
       }
 
-      if (occupancyPct >= 100) {
-        return 'full';
-      }
-
-      if (occupancyPct >= 95 && idx === filled - 1) {
-        return 'warn';
-      }
-
-      return 'ok';
+      return 'full';
     });
   }
 

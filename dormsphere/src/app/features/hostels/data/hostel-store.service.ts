@@ -55,6 +55,31 @@ export class HostelStoreService {
     return hostel;
   }
 
+  updateHostel(id: string, input: NewHostelInput): Hostel | undefined {
+    let updatedHostel: Hostel | undefined;
+
+    this.hostels.update((items) =>
+      items.map((hostel) => {
+        if (hostel.id !== id) {
+          return hostel;
+        }
+
+        updatedHostel = {
+          id,
+          ...input,
+        };
+
+        return updatedHostel;
+      })
+    );
+
+    if (updatedHostel) {
+      this.persistHostels();
+    }
+
+    return updatedHostel;
+  }
+
   private loadHostels(): Hostel[] {
     if (typeof window === 'undefined') {
       return INITIAL_HOSTELS;

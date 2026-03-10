@@ -115,13 +115,15 @@
 
 					<tbody class="divide-slate-100 dark:divide-slate-800 divide-y">
 						@for (hostel of hostels(); track hostel.id) {
-							<tr
-								[routerLink]="['/hostels', hostel.id]"
-								class="hover:bg-slate-50/50 cursor-pointer transition-colors dark:hover:bg-slate-800/30"
-							>
+							<tr class="hover:bg-slate-50/50 transition-colors dark:hover:bg-slate-800/30">
 								<td class="px-6 py-4">
 									<div class="flex flex-col">
-										<span class="text-slate-900 font-semibold dark:text-slate-100">{{ hostel.name }}</span>
+										<a
+											class="text-slate-900 hover:text-primary inline-block font-semibold dark:text-slate-100"
+											[routerLink]="['/hostels', hostel.id]"
+										>
+											{{ hostel.name }}
+										</a>
 										<span class="text-slate-400 text-xs">ID: {{ hostel.id }}</span>
 									</div>
 								</td>
