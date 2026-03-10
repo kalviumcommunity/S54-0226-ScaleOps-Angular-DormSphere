@@ -1,0 +1,368 @@
+<div class="bg-background-light text-slate-900 font-display relative flex min-h-screen w-full flex-col overflow-x-hidden dark:bg-background-dark dark:text-slate-100">
+  <header class="sticky top-0 z-50 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:px-10 dark:border-slate-800 dark:bg-slate-900">
+    <div class="flex items-center gap-3 lg:gap-8">
+      <button
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-700 lg:hidden dark:bg-slate-800 dark:text-slate-200"
+        type="button"
+        aria-label="Toggle sidebar"
+        (click)="toggleSidebar()"
+      >
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+
+      <div class="text-primary flex items-center gap-3">
+        <div class="bg-primary text-white flex size-8 items-center justify-center rounded-lg">
+          <span class="material-symbols-outlined">apartment</span>
+        </div>
+        <h2 class="text-slate-900 text-lg font-bold tracking-tight dark:text-white">UniHostel Pro</h2>
+      </div>
+
+      <label class="hidden h-10 min-w-72 md:flex">
+        <div class="focus-within:border-primary flex w-full items-center rounded-lg border border-transparent bg-slate-100 transition-all dark:bg-slate-800">
+          <span class="material-symbols-outlined px-3 text-slate-500">search</span>
+          <input class="w-full border-none bg-transparent px-2 py-2 text-sm focus:ring-0" placeholder="Search rooms, students, tickets..." type="text" />
+        </div>
+      </label>
+    </div>
+
+    <div class="flex items-center gap-2 lg:gap-6">
+      <nav class="hidden items-center gap-6 xl:flex">
+        <a routerLink="/dashboard" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Dashboard</a>
+        <a routerLink="/hostels" routerLinkActive="text-primary border-b-2 border-primary py-4 font-semibold" class="text-primary text-sm font-semibold">Hostels</a>
+        <a routerLink="/students" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Students</a>
+        <a routerLink="/maintenance" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Maintenance</a>
+        <a routerLink="/reports" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Reports</a>
+      </nav>
+
+      <button class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200" type="button">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <button class="hidden h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-700 md:flex dark:bg-slate-800 dark:text-slate-200" type="button">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+      <div class="bg-primary/10 border-primary/20 flex size-10 items-center justify-center overflow-hidden rounded-full border text-primary font-bold">
+        SJ
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-1">
+    @if (sidebarOpen) {
+      <button
+        class="fixed inset-0 z-40 bg-slate-900/45 lg:hidden"
+        type="button"
+        aria-label="Close sidebar"
+        (click)="closeSidebar()"
+      ></button>
+    }
+
+    <aside
+      class="fixed top-16.25 bottom-0 left-0 z-50 w-72 border-r border-slate-200 bg-white p-4 transition-transform lg:static lg:top-0 lg:block lg:h-auto lg:w-64 lg:translate-x-0 lg:overflow-y-auto dark:border-slate-800 dark:bg-slate-900"
+      [class.-translate-x-full]="!sidebarOpen"
+      [class.translate-x-0]="sidebarOpen"
+    >
+      <div class="mb-6 px-2">
+        <h3 class="text-slate-400 text-xs font-bold tracking-widest uppercase">Navigation</h3>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <a class="bg-primary/10 text-primary flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold" routerLink="/dashboard" (click)="closeSidebar()">
+          <span class="material-symbols-outlined">dashboard</span>
+          Overview
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/rooms" (click)="closeSidebar()">
+          <span class="material-symbols-outlined">door_open</span>
+          Rooms and Beds
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/students" (click)="closeSidebar()">
+          <span class="material-symbols-outlined">group</span>
+          Current Residents
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/maintenance" (click)="closeSidebar()">
+          <span class="material-symbols-outlined">engineering</span>
+          Maintenance
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/reports" (click)="closeSidebar()">
+          <span class="material-symbols-outlined">inventory_2</span>
+          Asset Inventory
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/hostels" (click)="closeSidebar()">
+          <span class="material-symbols-outlined">payments</span>
+          Billing and Fees
+        </a>
+      </div>
+
+      @if (hostel; as selectedHostel) {
+        <div class="mt-8 mb-5 px-2">
+          <h3 class="text-slate-400 text-xs font-bold tracking-widest uppercase">Location Details</h3>
+        </div>
+
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+          <div class="mb-3 aspect-video rounded-lg bg-linear-to-br from-emerald-200 to-cyan-200 dark:from-emerald-900/40 dark:to-cyan-900/40"></div>
+          <p class="text-slate-900 mb-1 text-sm font-bold dark:text-white">{{ selectedHostel.name }}</p>
+          <p class="text-slate-500 mb-3 text-xs">{{ selectedHostel.location }}</p>
+          <button class="w-full rounded-lg border border-slate-200 bg-white py-2 text-xs font-semibold text-slate-700 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200" type="button">
+            Get Directions
+          </button>
+        </div>
+      }
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-white p-5 lg:p-8 dark:bg-background-dark">
+      @if (hostel; as selectedHostel) {
+        <div class="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+          <div>
+            <nav class="text-slate-500 mb-2 flex items-center gap-2 text-sm">
+              <a class="hover:text-primary" routerLink="/dashboard">University</a>
+              <span class="material-symbols-outlined text-xs">chevron_right</span>
+              <a class="hover:text-primary" routerLink="/hostels">Hostels</a>
+              <span class="material-symbols-outlined text-xs">chevron_right</span>
+              <span class="text-slate-900 font-medium dark:text-slate-200">{{ selectedHostel.name }}</span>
+            </nav>
+            <h1 class="text-slate-900 text-3xl font-black tracking-tight lg:text-4xl dark:text-white">
+              {{ selectedHostel.name }}
+              <span class="text-primary bg-primary/10 ml-2 rounded-lg px-2 py-0.5 align-middle text-lg lg:text-xl">{{ selectedHostel.id }}</span>
+            </h1>
+            <p class="text-slate-500 mt-1 flex items-center gap-2 font-medium">
+              <span class="material-symbols-outlined text-sm">person</span>
+              Managed by {{ selectedHostel.wardenName }}
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <a class="text-slate-700 border-slate-200 inline-flex items-center gap-2 rounded-xl border bg-white px-4 py-2.5 text-sm font-bold dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200" routerLink="/hostels">
+              <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+              Back
+            </a>
+            <a class="bg-primary inline-flex items-center gap-2 rounded-xl px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-emerald-900/20" [routerLink]="['/hostels', selectedHostel.id, 'edit']">
+              <span class="material-symbols-outlined text-[20px]">edit</span>
+              Edit Details
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <article class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="mb-4 flex items-start justify-between">
+              <div class="rounded-xl bg-blue-50 p-3 text-blue-600 dark:bg-blue-900/20">
+                <span class="material-symbols-outlined">bed</span>
+              </div>
+              <span class="rounded bg-slate-50 px-2 py-1 text-xs font-bold text-slate-400 dark:bg-slate-800">CAPACITY</span>
+            </div>
+            <p class="text-slate-500 text-sm font-medium">Total Beds</p>
+            <h3 class="text-slate-900 text-3xl font-black dark:text-white">{{ selectedHostel.capacity }}</h3>
+          </article>
+
+          <article class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="mb-4 flex items-start justify-between">
+              <div class="rounded-xl bg-green-50 p-3 text-green-600 dark:bg-green-900/20">
+                <span class="material-symbols-outlined">person_add</span>
+              </div>
+              <span class="rounded bg-green-50 px-2 py-1 text-xs font-bold text-green-600 dark:bg-green-900/20">LIVE</span>
+            </div>
+            <p class="text-slate-500 text-sm font-medium">Current Occupancy</p>
+            <h3 class="text-slate-900 text-3xl font-black dark:text-white">{{ selectedHostel.occupiedBeds }}</h3>
+          </article>
+
+          <article class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="mb-4 flex items-start justify-between">
+              <div class="rounded-xl bg-violet-50 p-3 text-violet-600 dark:bg-violet-900/20">
+                <span class="material-symbols-outlined">donut_large</span>
+              </div>
+              <span class="rounded bg-slate-50 px-2 py-1 text-xs font-bold text-slate-400 dark:bg-slate-800">RATE</span>
+            </div>
+            <p class="text-slate-500 text-sm font-medium">Occupancy Rate</p>
+            <h3 class="text-slate-900 text-3xl font-black dark:text-white">{{ occupancyRate }}%</h3>
+          </article>
+
+          <article class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="mb-4 flex items-start justify-between">
+              <div class="rounded-xl bg-orange-50 p-3 text-orange-600 dark:bg-orange-900/20">
+                <span class="material-symbols-outlined">build</span>
+              </div>
+              <span class="rounded bg-orange-50 px-2 py-1 text-xs font-bold text-orange-600 dark:bg-orange-900/20">HIGH PRIO</span>
+            </div>
+            <p class="text-slate-500 text-sm font-medium">Active Tickets</p>
+            <h3 class="text-slate-900 text-3xl font-black dark:text-white">{{ activeTicketsCount }}</h3>
+          </article>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 xl:grid-cols-3">
+          <div class="space-y-8 xl:col-span-2">
+            <section class="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="flex items-center justify-between border-b border-slate-100 p-6 dark:border-slate-800">
+                <h2 class="text-slate-900 flex items-center gap-2 text-lg font-bold dark:text-white">
+                  <span class="material-symbols-outlined text-primary">layers</span>
+                  Floor Breakdown
+                </h2>
+                <button class="text-primary text-sm font-bold" type="button">View All Floors</button>
+              </div>
+
+              <div class="space-y-6 p-6">
+                @for (floor of floorBreakdown; track floor.level) {
+                  <article class="flex flex-col gap-3" [class.opacity-75]="floor.occupancyPct >= 100">
+                    <div class="flex items-end justify-between">
+                      <div class="flex items-baseline gap-2">
+                        <span class="text-slate-900 text-sm font-black dark:text-white">Floor {{ floor.level }}</span>
+                        <span class="text-slate-400 text-xs font-bold tracking-tighter uppercase">{{ floor.label }}</span>
+                      </div>
+                      <span class="text-slate-500 text-xs font-bold">{{ floor.occupied }}/{{ floor.capacity }} beds occupied</span>
+                    </div>
+
+                    <div class="h-4 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                      <div class="h-full" [class]="floorStatusClass(floor.occupancyPct)" [style.width.%]="floor.occupancyPct"></div>
+                    </div>
+
+                    <div class="mt-1 grid grid-cols-5 gap-2">
+                      @for (segment of floor.track; track $index) {
+                        <div class="h-1 rounded-full" [class]="trackSegmentClass(segment)"></div>
+                      }
+                    </div>
+                  </article>
+                }
+              </div>
+            </section>
+
+            <section class="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="border-b border-slate-100 p-6 dark:border-slate-800">
+                <h2 class="text-slate-900 flex items-center gap-2 text-lg font-bold dark:text-white">
+                  <span class="material-symbols-outlined text-primary">analytics</span>
+                  Occupancy Statistics
+                </h2>
+              </div>
+
+              <div class="p-8">
+                <div class="flex flex-col items-center gap-12 md:flex-row">
+                  <div class="relative size-48">
+                    <svg class="size-full" viewBox="0 0 36 36">
+                      <path class="stroke-current text-slate-100 dark:text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+                      <path class="text-primary stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" [attr.stroke-dasharray]="occupancyRate + ', 100'" stroke-linecap="round" stroke-width="3"></path>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                      <span class="text-slate-900 text-4xl font-black dark:text-white">{{ occupancyRate }}%</span>
+                      <span class="text-slate-400 text-[10px] font-bold tracking-widest uppercase">Full</span>
+                    </div>
+                  </div>
+
+                  <div class="grid w-full flex-1 grid-cols-1 gap-4 sm:grid-cols-2">
+                    @for (mix of roomMix; track mix.name) {
+                      <article class="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/50">
+                        <p class="text-slate-400 mb-1 text-xs font-bold uppercase">{{ mix.name }}</p>
+                        <p class="text-slate-900 text-xl font-black dark:text-white">{{ mix.occupied }} / {{ mix.capacity }}</p>
+                        <div class="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+                          <div class="bg-primary h-full" [style.width.%]="mix.pct"></div>
+                        </div>
+                      </article>
+                    }
+
+                    <div class="flex items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800">
+                      <button class="text-primary flex items-center gap-1 text-xs font-bold" type="button">
+                        <span class="material-symbols-outlined text-sm">add_circle</span>
+                        Add Category
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="space-y-8">
+            <section class="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="flex items-center justify-between border-b border-slate-100 p-6 dark:border-slate-800">
+                <h2 class="text-slate-900 flex items-center gap-2 text-lg font-bold dark:text-white">
+                  <span class="material-symbols-outlined text-orange-500">warning</span>
+                  Active Tickets
+                </h2>
+                <span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-600">{{ activeTicketsCount }} Open</span>
+              </div>
+
+              <div class="space-y-4 p-4">
+                @for (ticket of tickets; track ticket.id) {
+                  <article class="group cursor-pointer rounded-2xl border border-slate-100 p-4 transition-all hover:border-primary/20 dark:border-slate-800">
+                    <div class="mb-2 flex justify-between">
+                      <span
+                        class="rounded px-2 py-0.5 text-[10px] font-bold text-white uppercase"
+                        [class.bg-red-500]="ticket.severity === 'URGENT'"
+                        [class.bg-slate-500]="ticket.severity !== 'URGENT'"
+                        >{{ ticket.severity }}</span
+                      >
+                      <span class="text-slate-400 text-[10px] font-bold">#{{ ticket.id }}</span>
+                    </div>
+
+                    <h4 class="text-slate-900 group-hover:text-primary mb-1 text-sm font-bold transition-colors dark:text-white">{{ ticket.title }}</h4>
+                    <p class="text-slate-500 text-xs">{{ ticket.description }}</p>
+
+                    <div class="mt-3 flex items-center justify-between">
+                      <div class="flex -space-x-2">
+                        <div class="size-6 rounded-full border-2 border-white bg-emerald-200 dark:border-slate-900"></div>
+                        <div class="size-6 rounded-full border-2 border-white bg-cyan-200 dark:border-slate-900"></div>
+                        @if (ticket.assignees > 1) {
+                          <div class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-slate-100 text-[8px] font-bold dark:border-slate-900 dark:bg-slate-800">+{{ ticket.assignees - 1 }}</div>
+                        }
+                      </div>
+
+                      <span class="text-slate-400 flex items-center gap-1 text-[10px] font-medium">
+                        <span class="material-symbols-outlined text-xs">schedule</span>
+                        {{ ticket.age }}
+                      </span>
+                    </div>
+                  </article>
+                }
+
+                <button class="w-full rounded-xl bg-slate-50 py-3 text-xs font-bold text-slate-600 dark:bg-slate-800/50 dark:text-slate-400" type="button">
+                  View Maintenance Dashboard
+                </button>
+              </div>
+            </section>
+
+            <section class="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <div class="border-b border-slate-100 p-6 dark:border-slate-800">
+                <h2 class="text-slate-900 flex items-center gap-2 text-lg font-bold dark:text-white">
+                  <span class="material-symbols-outlined text-primary">history</span>
+                  Recent Activity
+                </h2>
+              </div>
+
+              <div class="space-y-6 p-6">
+                @for (entry of recentActivity; track entry.title) {
+                  <article class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <div class="mt-2 size-2 rounded-full" [class]="activityDotClass(entry.tone)"></div>
+                      <div class="mt-2 h-full w-0.5 bg-slate-100 dark:bg-slate-800"></div>
+                    </div>
+                    <div>
+                      <p class="text-slate-900 text-xs font-bold dark:text-white">{{ entry.title }}</p>
+                      <p class="text-slate-500 mt-0.5 text-xs">{{ entry.description }}</p>
+                      <p class="text-slate-400 mt-1 text-[10px] font-bold tracking-tighter uppercase">{{ entry.time }}</p>
+                    </div>
+                  </article>
+                }
+              </div>
+            </section>
+
+            <section class="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <h3 class="text-slate-900 text-sm font-bold dark:text-white">Hostel Profile</h3>
+              <div class="mt-3 grid grid-cols-1 gap-2 text-sm">
+                <p><span class="text-slate-500">Type:</span> {{ selectedHostel.type }}</p>
+                <p><span class="text-slate-500">Warden:</span> {{ selectedHostel.wardenName }}</p>
+                <p><span class="text-slate-500">Extension:</span> {{ selectedHostel.wardenExtension }}</p>
+                <p><span class="text-slate-500">Available Beds:</span> {{ availableBeds }}</p>
+                <p><span class="text-slate-500">Status:</span> {{ selectedHostel.status }}</p>
+              </div>
+            </section>
+          </div>
+        </div>
+      } @else {
+        <section class="mx-auto mt-16 w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <h1 class="text-2xl font-extrabold">Hostel Not Found</h1>
+          <p class="text-slate-500 mt-2">The requested hostel ID does not exist in the current list.</p>
+          <a class="bg-primary mt-6 inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white" routerLink="/hostels">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+            Return To Hostels
+          </a>
+        </section>
+      }
+    </main>
+  </div>
+</div>

@@ -17,29 +17,38 @@
 
     <div class="hidden items-center gap-6 md:flex">
       <a
+        routerLink="/dashboard"
+        routerLinkActive="text-primary"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
-        href="#"
+        
         >Dashboard</a
       >
       <a
-        class="text-primary border-primary py-1 text-sm font-semibold"
-        href="#"
-        style="border-bottom-width: 2px"
+        routerLink="/hostels"
+        routerLinkActive="text-primary border-primary border-b-2 py-1 font-semibold"
+        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
         >Hostels</a
       >
       <a
+        routerLink="/rooms"
+        routerLinkActive="text-primary"
         class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
-        href="#"
+        
         >Rooms</a
       >
       <a
+        routerLink="/students"
+        routerLinkActive="text-primary"
         class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
-        href="#"
+        
         >Students</a
       >
       <a
+        routerLink="/reports"
+        routerLinkActive="text-primary"
         class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
-        href="#"
+        
         >Reports</a
       >
     </div>
