@@ -1,14 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-	--color-primary: #059467;
-	--color-background-light: #ffffff;
-	--color-background-dark: #101022;
-	--font-display: 'Inter', sans-serif;
+  --color-primary: #059467;
+  --color-background-light: #ffffff;
+  --color-background-dark: #101022;
+  --font-display: 'Inter', sans-serif;
 }
 
 .material-symbols-outlined {
-	font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+a.interactive,
+button.interactive,
+[role='button'].interactive {
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    filter 0.16s ease;
+}
+
+a.interactive:hover,
+button.interactive:not(:disabled):hover,
+[role='button'].interactive:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+a.interactive:active,
+button.interactive:not(:disabled):active,
+[role='button'].interactive:active {
+  transform: scale(0.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.interactive,
+  button.interactive,
+  [role='button'].interactive {
+    transition: none;
+  }
+
+  a.interactive:hover,
+  button.interactive:hover,
+  [role='button'].interactive:hover,
+  a.interactive:active,
+  button.interactive:active,
+  [role='button'].interactive:active {
+    transform: none;
+  }
 }

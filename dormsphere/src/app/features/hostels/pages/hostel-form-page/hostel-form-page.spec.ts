@@ -8,9 +8,8 @@ describe('HostelFormPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HostelFormPage]
-    })
-    .compileComponents();
+      imports: [HostelFormPage],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HostelFormPage);
     component = fixture.componentInstance;

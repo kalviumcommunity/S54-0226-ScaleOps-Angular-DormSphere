@@ -1,0 +1,48 @@
+import { Hostel } from './hostel.model';
+
+export const INITIAL_HOSTELS: Hostel[] = [
+  {
+    id: 'HST-2024-001',
+    name: 'North Hall Residency',
+    location: 'Sector 12, East Campus',
+    type: 'BOYS',
+    wardenName: 'Dr. Robert Smith',
+    wardenExtension: '4012',
+    capacity: 500,
+    occupiedBeds: 480,
+    status: 'ALMOST FULL',
+  },
+  {
+    id: 'HST-2024-002',
+    name: 'South Wing Gardens',
+    location: 'Main Gate, South Campus',
+    type: 'GIRLS',
+    wardenName: 'Prof. Sarah J.',
+    wardenExtension: '2189',
+    capacity: 450,
+    occupiedBeds: 220,
+    status: 'AVAILABLE',
+  },
+  {
+    id: 'HST-2024-003',
+    name: 'International House',
+    location: 'Central Block',
+    type: 'CO-ED',
+    wardenName: 'Mr. Kevin V.',
+    wardenExtension: '9901',
+    capacity: 300,
+    occupiedBeds: 300,
+    status: 'FULLY OCCUPIED',
+  },
+  {
+    id: 'HST-2024-004',
+    name: 'Old Dorms A-C',
+    location: 'Heritage Zone, West Campus',
+    type: 'BOYS',
+    wardenName: 'Mr. James P.',
+    wardenExtension: '3321',
+    capacity: 600,
+    occupiedBeds: 150,
+    status: 'MAINTENANCE',
+  },
+];
