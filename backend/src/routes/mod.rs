@@ -1,7 +1,5 @@
 use axum::{
-    http::{Method, StatusCode},
-    routing::{delete, get, options, post, put},
-    Router,
+    Router, http::{HeaderValue, Method, StatusCode}, routing::{delete, get, options, post, put}
 };
 use sqlx::PgPool;
 use tower_http::cors::{Any, CorsLayer};
@@ -14,8 +12,13 @@ async fn preflight() -> StatusCode {
 }
 
 pub fn create_routes(pool: PgPool) -> Router {
-    let cors = CorsLayer::new()
-        .allow_origin(Any)
+     let cors = CorsLayer::new()
+        .allow_origin(
+            std::env::var("FRONTEND_URL")
+                .unwrap_or_else(|_| "http://localhost:4200".to_string())
+                .parse::<HeaderValue>()
+                .unwrap(),
+        )
         .allow_methods([Method::GET, Method::POST, Method::PUT, Method::DELETE, Method::OPTIONS])
         .allow_headers(Any);
 

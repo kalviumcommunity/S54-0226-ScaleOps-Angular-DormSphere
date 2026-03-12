@@ -69,13 +69,13 @@ export class HostelStoreService {
     try {
       const apiHostels = await firstValueFrom(this.http.get<ApiHostel[]>(HOSTELS_API_BASE_URL));
       this.hostels.set(apiHostels.map((item) => this.toHostel(item)));
-        } catch (error) {
+    } catch (error) {
       this.errorMessage.set('Unable to load hostels. Please try again later.');
       // Developer note: ensure the backend API is reachable (for example, verify the Rust server is
       // running on the expected port and that any required Angular proxy configuration is active).
       console.error(
         'Failed to load hostels from backend API. Verify the Rust server is running on port 8000 and restart ng serve so the proxy is active.',
-        error
+        error,
       );
       this.hostels.set([]);
     } finally {
@@ -89,7 +89,7 @@ export class HostelStoreService {
 
     try {
       const created = await firstValueFrom(
-        this.http.post<ApiHostel>(HOSTELS_API_BASE_URL, this.toApiPayload(input))
+        this.http.post<ApiHostel>(HOSTELS_API_BASE_URL, this.toApiPayload(input)),
       );
 
       this.upsertMetadata(String(created.id), {
@@ -117,7 +117,7 @@ export class HostelStoreService {
 
     try {
       const updated = await firstValueFrom(
-        this.http.put<ApiHostel>(`${HOSTELS_API_BASE_URL}/${id}`, this.toApiPayload(input))
+        this.http.put<ApiHostel>(`${HOSTELS_API_BASE_URL}/${id}`, this.toApiPayload(input)),
       );
 
       this.upsertMetadata(String(updated.id), {
@@ -130,9 +130,7 @@ export class HostelStoreService {
 
       const mapped = this.toHostel(updated);
 
-      this.hostels.update((items) =>
-        items.map((hostel) => (hostel.id === id ? mapped : hostel))
-      );
+      this.hostels.update((items) => items.map((hostel) => (hostel.id === id ? mapped : hostel)));
 
       return mapped;
     } catch {
@@ -147,7 +145,9 @@ export class HostelStoreService {
     this.errorMessage.set(null);
 
     try {
-      await firstValueFrom(this.http.delete(`${HOSTELS_API_BASE_URL}/${id}`, { responseType: 'text' }));
+      await firstValueFrom(
+        this.http.delete(`${HOSTELS_API_BASE_URL}/${id}`, { responseType: 'text' }),
+      );
       this.hostels.update((items) => items.filter((hostel) => hostel.id !== id));
       this.removeMetadata(id);
       return true;
