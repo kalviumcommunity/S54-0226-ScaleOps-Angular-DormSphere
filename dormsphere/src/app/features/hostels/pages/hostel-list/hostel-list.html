@@ -136,7 +136,7 @@
 								</td>
 								<td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-400">{{ hostel.location }}</td>
 								<td class="px-6 py-4">
-									<div class="min-w-30 flex flex-col gap-1.5">
+									<div class="min-w-[120px] flex flex-col gap-1.5">
 										<div class="flex justify-between text-xs font-medium">
 											<span>{{ hostel.occupiedBeds }} / {{ hostel.capacity }}</span>
 											<span [class]="occupancyTextClass(hostel)">{{ occupancyPercentage(hostel) }}%</span>

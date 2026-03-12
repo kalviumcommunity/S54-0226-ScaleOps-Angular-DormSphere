@@ -119,6 +119,10 @@ export class HostelFormPage {
 
     const hostel = await this.hostelStore.addHostel(payload);
 
+    if (!hostel) {
+      return;
+    }
+
     this.router.navigate(['/hostels', hostel.id]);
   }
 

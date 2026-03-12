@@ -69,15 +69,21 @@ export class HostelStoreService {
     try {
       const apiHostels = await firstValueFrom(this.http.get<ApiHostel[]>(HOSTELS_API_BASE_URL));
       this.hostels.set(apiHostels.map((item) => this.toHostel(item)));
-    } catch {
-      this.errorMessage.set('Unable to load hostels from backend API. Verify the Rust server is running on port 8000 and restart ng serve so the proxy is active.');
+        } catch (error) {
+      this.errorMessage.set('Unable to load hostels. Please try again later.');
+      // Developer note: ensure the backend API is reachable (for example, verify the Rust server is
+      // running on the expected port and that any required Angular proxy configuration is active).
+      console.error(
+        'Failed to load hostels from backend API. Verify the Rust server is running on port 8000 and restart ng serve so the proxy is active.',
+        error
+      );
       this.hostels.set([]);
     } finally {
       this.loading.set(false);
     }
   }
 
-  async addHostel(input: NewHostelInput): Promise<Hostel> {
+  async addHostel(input: NewHostelInput): Promise<Hostel | undefined> {
     this.saving.set(true);
     this.errorMessage.set(null);
 
@@ -99,7 +105,7 @@ export class HostelStoreService {
       return mapped;
     } catch {
       this.errorMessage.set('Unable to create hostel. Please try again.');
-      throw new Error('Create hostel failed');
+      return undefined;
     } finally {
       this.saving.set(false);
     }
