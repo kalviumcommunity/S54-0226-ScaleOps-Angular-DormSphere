@@ -15,6 +15,16 @@ export class HostelList {
 
   readonly hostels = this.hostelStore.hostels;
   readonly totals = this.hostelStore.totals;
+  readonly loading = this.hostelStore.loading;
+  readonly errorMessage = this.hostelStore.errorMessage;
+
+  async deleteHostel(id: string): Promise<void> {
+    if (typeof window !== 'undefined' && !window.confirm('Delete this hostel? This cannot be undone.')) {
+      return;
+    }
+
+    await this.hostelStore.deleteHostel(id);
+  }
 
   occupancyPercentage(hostel: Hostel): number {
     if (hostel.capacity <= 0) {

@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Va
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { HostelNavbar } from '../../components/hostel-navbar/hostel-navbar';
-import { HostelStatus, HostelType } from '../../data/hostel.model';
+import { HostelStatus, HostelType, NewHostelInput } from '../../data/hostel.model';
 import { HostelStoreService } from '../../data/hostel-store.service';
 
 function occupiedBedsWithinCapacityValidator(): ValidatorFn {
@@ -14,6 +14,16 @@ function occupiedBedsWithinCapacityValidator(): ValidatorFn {
 
     return occupiedBeds > capacity ? { occupiedBedsExceedsCapacity: true } : null;
   };
+}
+
+function defaultWardenName(hostelName: string): string {
+  const trimmedName = hostelName.trim();
+  return trimmedName ? `${trimmedName} Warden` : 'Assigned Warden';
+}
+
+function defaultWardenExtension(capacity: number): string {
+  const safeCapacity = Number.isFinite(capacity) ? Math.max(0, capacity) : 0;
+  return String(4100 + (safeCapacity % 700));
 }
 
 @Component({
@@ -38,15 +48,17 @@ export class HostelFormPage {
 
   readonly editingHostel = computed(() => this.hostelStore.getHostelById(this.editingHostelId()));
   readonly isEditMode = computed(() => this.editingHostel() !== undefined);
+  readonly saving = this.hostelStore.saving;
+  readonly errorMessage = this.hostelStore.errorMessage;
 
   readonly form = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
-    location: ['', [Validators.required]],
+    location: [''],
     type: 'BOYS' as HostelType,
-    wardenName: ['', [Validators.required]],
-    wardenExtension: ['', [Validators.required]],
+    wardenName: [''],
+    wardenExtension: [''],
     capacity: [300, [Validators.required, Validators.min(1)]],
-    occupiedBeds: [0, [Validators.required, Validators.min(0)]],
+    occupiedBeds: [0, [Validators.min(0)]],
     status: 'AVAILABLE' as HostelStatus,
   }, { validators: [occupiedBedsWithinCapacityValidator()] });
 
@@ -71,7 +83,7 @@ export class HostelFormPage {
     });
   }
 
-  submit(): void {
+  async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -80,9 +92,15 @@ export class HostelFormPage {
     const value = this.form.getRawValue();
     const capacity = Number(value.capacity);
     const occupiedBeds = Math.min(Number(value.occupiedBeds), capacity);
+    const name = value.name.trim();
+    const location = value.location.trim();
 
-    const payload = {
+    const payload: NewHostelInput = {
       ...value,
+      name,
+      location,
+      wardenName: value.wardenName.trim() || defaultWardenName(name),
+      wardenExtension: value.wardenExtension.trim() || defaultWardenExtension(capacity),
       capacity,
       occupiedBeds,
     };
@@ -90,9 +108,8 @@ export class HostelFormPage {
     const editingHostelId = this.editingHostelId();
 
     if (editingHostelId) {
-      const updatedHostel = this.hostelStore.updateHostel(editingHostelId, payload);
+      const updatedHostel = await this.hostelStore.updateHostel(editingHostelId, payload);
       if (!updatedHostel) {
-        this.router.navigate(['/hostels']);
         return;
       }
 
@@ -100,7 +117,7 @@ export class HostelFormPage {
       return;
     }
 
-    const hostel = this.hostelStore.addHostel(payload);
+    const hostel = await this.hostelStore.addHostel(payload);
 
     this.router.navigate(['/hostels', hostel.id]);
   }

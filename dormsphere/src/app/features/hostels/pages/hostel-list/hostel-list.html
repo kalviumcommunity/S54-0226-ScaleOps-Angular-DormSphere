@@ -1,7 +1,7 @@
 <div
 	class="bg-background-light text-slate-900 font-display relative flex min-h-screen flex-col dark:bg-background-dark dark:text-slate-100"
 >
-	<app-hostel-navbar />
+	<app-hostel-navbar></app-hostel-navbar>
 
 	<main class="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
 		<div class="mb-8 flex flex-col justify-between gap-6 md:flex-row md:items-center">
@@ -22,24 +22,25 @@
 					<span class="material-symbols-outlined text-lg">download</span>
 					Export CSV
 				</button>
-T				<a
+				<a
 					routerLink="/hostels/new"
-					class="bg-primary flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
-					style="
-						--tw-shadow-color: rgba(5, 148, 103, 0.2);
-						box-shadow: 0 10px 15px -3px var(--tw-shadow-color);
-					"
-					type="button"
+					class="add-hostel-cta bg-primary flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
 				>
 					<span class="material-symbols-outlined text-lg">add</span>
 					Add New Hostel
-				</button>
+				</a>
 			</div>
 		</div>
 
+		@if (errorMessage(); as error) {
+			<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+				{{ error }}
+			</div>
+		}
+
 		<div class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
 			<div class="flex flex-wrap items-center justify-between gap-4">
-				<div class="min-w-[300px] flex-1">
+				<div class="min-w-72 flex-1">
 					<div class="relative">
 						<span
 							class="material-symbols-outlined absolute top-1/2 left-3 -translate-y-1/2 text-slate-400"
@@ -84,6 +85,11 @@ T				<a
 		</div>
 
 		<div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+			@if (loading()) {
+				<div class="border-b border-slate-200 px-6 py-4 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
+					Loading hostels from backend...
+				</div>
+			}
 			<div class="overflow-x-auto">
 				<table class="w-full border-collapse text-left">
 					<thead>
@@ -130,7 +136,7 @@ T				<a
 								</td>
 								<td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-400">{{ hostel.location }}</td>
 								<td class="px-6 py-4">
-									<div class="min-w-[120px] flex flex-col gap-1.5">
+									<div class="min-w-30 flex flex-col gap-1.5">
 										<div class="flex justify-between text-xs font-medium">
 											<span>{{ hostel.occupiedBeds }} / {{ hostel.capacity }}</span>
 											<span [class]="occupancyTextClass(hostel)">{{ occupancyPercentage(hostel) }}%</span>
@@ -173,9 +179,23 @@ T				<a
 									</span>
 								</td>
 								<td class="px-6 py-4 text-right">
-									<button class="hover:text-primary p-1 transition-colors" type="button">
-										<span class="material-symbols-outlined">more_vert</span>
-									</button>
+									<div class="flex justify-end gap-2">
+										<a
+											class="hover:text-primary rounded p-1 transition-colors"
+											[routerLink]="['/hostels', hostel.id, 'edit']"
+											aria-label="Edit hostel"
+										>
+											<span class="material-symbols-outlined">edit</span>
+										</a>
+										<button
+											class="rounded p-1 text-red-500 transition-colors hover:text-red-600"
+											type="button"
+											aria-label="Delete hostel"
+											(click)="deleteHostel(hostel.id)"
+										>
+											<span class="material-symbols-outlined">delete</span>
+										</button>
+									</div>
 								</td>
 							</tr>
 						}

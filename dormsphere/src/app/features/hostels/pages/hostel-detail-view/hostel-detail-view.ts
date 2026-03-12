@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { map } from 'rxjs';
 import { HostelStoreService } from '../../data/hostel-store.service';
 
@@ -45,8 +45,11 @@ interface ActivityItem {
 export class HostelDetailView {
   private readonly hostelStore = inject(HostelStoreService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   sidebarOpen = false;
+  readonly loading = this.hostelStore.loading;
+  readonly errorMessage = this.hostelStore.errorMessage;
 
   readonly hostelId = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('id'))),
@@ -214,6 +217,24 @@ export class HostelDetailView {
 
   closeSidebar(): void {
     this.sidebarOpen = false;
+  }
+
+  async deleteCurrentHostel(): Promise<void> {
+    const id = this.hostelId();
+
+    if (!id) {
+      return;
+    }
+
+    if (typeof window !== 'undefined' && !window.confirm('Delete this hostel? This cannot be undone.')) {
+      return;
+    }
+
+    const deleted = await this.hostelStore.deleteHostel(id);
+
+    if (deleted) {
+      this.router.navigate(['/hostels']);
+    }
   }
 
   floorStatusClass(value: number): string {

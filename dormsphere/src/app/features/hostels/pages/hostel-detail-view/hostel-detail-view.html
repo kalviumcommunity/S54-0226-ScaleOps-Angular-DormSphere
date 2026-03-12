@@ -28,7 +28,7 @@
     <div class="flex items-center gap-2 lg:gap-6">
       <nav class="hidden items-center gap-6 xl:flex">
         <a routerLink="/dashboard" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Dashboard</a>
-        <a routerLink="/hostels" routerLinkActive="text-primary border-b-2 border-primary py-4 font-semibold" class="text-primary text-sm font-semibold">Hostels</a>
+        <a routerLink="/hostels" routerLinkActive="text-primary border-b-2 border-primary py-4 font-semibold" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Hostels</a>
         <a routerLink="/students" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Students</a>
         <a routerLink="/maintenance" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Maintenance</a>
         <a routerLink="/reports" routerLinkActive="text-primary" class="text-slate-600 text-sm font-medium hover:text-primary dark:text-slate-300">Reports</a>
@@ -66,29 +66,29 @@
       </div>
 
       <div class="flex flex-col gap-1">
-        <a class="bg-primary/10 text-primary flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold" routerLink="/dashboard" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined">dashboard</span>
           Overview
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/rooms" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/rooms" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined">door_open</span>
           Rooms and Beds
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/students" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/students" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined">group</span>
           Current Residents
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/maintenance" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/maintenance" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined">engineering</span>
           Maintenance
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/reports" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/reports" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined">inventory_2</span>
-          Asset Inventory
+          Reports
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/hostels" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/hostels" routerLinkActive="bg-primary/10 text-primary font-semibold" [routerLinkActiveOptions]="{ exact: false }" (click)="closeSidebar()">
           <span class="material-symbols-outlined">payments</span>
-          Billing and Fees
+          Hostels
         </a>
       </div>
 
@@ -109,6 +109,18 @@
     </aside>
 
     <main class="flex-1 overflow-y-auto bg-white p-5 lg:p-8 dark:bg-background-dark">
+      @if (errorMessage(); as error) {
+        <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+          {{ error }}
+        </div>
+      }
+
+      @if (loading()) {
+        <div class="mb-6 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
+          Loading hostel details from backend...
+        </div>
+      }
+
       @if (hostel; as selectedHostel) {
         <div class="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <div>
@@ -138,6 +150,14 @@
               <span class="material-symbols-outlined text-[20px]">edit</span>
               Edit Details
             </a>
+            <button
+              class="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 transition-colors hover:bg-red-100 dark:border-red-900/40 dark:bg-red-900/10 dark:text-red-300"
+              type="button"
+              (click)="deleteCurrentHostel()"
+            >
+              <span class="material-symbols-outlined text-[20px]">delete</span>
+              Delete Hostel
+            </button>
           </div>
         </div>
 

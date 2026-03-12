@@ -1,0 +1,4 @@
+.add-hostel-cta {
+	--tw-shadow-color: rgba(5, 148, 103, 0.2);
+	box-shadow: 0 10px 15px -3px var(--tw-shadow-color);
+}
