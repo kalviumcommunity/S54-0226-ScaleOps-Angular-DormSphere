@@ -11,7 +11,16 @@
             : 'Create a new hostel and make it available in the Hostels list and detail flow.'
         }}
       </p>
+      <p class="mt-2 text-sm text-slate-400">
+        Backend schema fields: name and total capacity are required. Location is optional. Other fields are UI-level operational metadata.
+      </p>
     </div>
+
+    @if (errorMessage(); as error) {
+      <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+        {{ error }}
+      </div>
+    }
 
     <form
       [formGroup]="form"
@@ -27,6 +36,7 @@
             placeholder="Example: Riverfront Hall"
             type="text"
           />
+          <span class="text-xs font-normal text-slate-400">Required by backend schema.</span>
         </label>
 
         <label class="flex flex-col gap-2 text-sm font-semibold">
@@ -37,6 +47,7 @@
             placeholder="Example: North Campus"
             type="text"
           />
+          <span class="text-xs font-normal text-slate-400">Optional in backend schema.</span>
         </label>
 
         <label class="flex flex-col gap-2 text-sm font-semibold">
@@ -71,6 +82,7 @@
             placeholder="Example: Dr. Hannah Lee"
             type="text"
           />
+          <span class="text-xs font-normal text-slate-400">Optional UI metadata. A default will be generated if left blank.</span>
         </label>
 
         <label class="flex flex-col gap-2 text-sm font-semibold">
@@ -81,16 +93,18 @@
             placeholder="Example: 4432"
             type="text"
           />
+          <span class="text-xs font-normal text-slate-400">Optional UI metadata. A default will be generated if left blank.</span>
         </label>
 
         <label class="flex flex-col gap-2 text-sm font-semibold">
-          Capacity
+          Total Capacity
           <input
             class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
             formControlName="capacity"
             min="1"
             type="number"
           />
+          <span class="text-xs font-normal text-slate-400">Required by backend schema for hostel planning.</span>
         </label>
 
         <label class="flex flex-col gap-2 text-sm font-semibold">
@@ -102,6 +116,7 @@
             [attr.max]="form.controls.capacity.value"
             type="number"
           />
+          <span class="text-xs font-normal text-slate-400">Optional UI metadata used for dashboard calculations.</span>
         </label>
       </div>
 
@@ -115,6 +130,7 @@
         <button
           class="bg-primary inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
           type="submit"
+          [disabled]="saving()"
         >
           <span class="material-symbols-outlined text-lg">save</span>
           {{ isEditMode() ? 'Update Hostel' : 'Save Hostel' }}
@@ -128,6 +144,10 @@
           Cancel
         </a>
       </div>
+
+      @if (saving()) {
+        <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">Saving hostel details to backend...</p>
+      }
     </form>
   </main>
 </div>
