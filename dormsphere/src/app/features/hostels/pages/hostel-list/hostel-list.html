@@ -51,32 +51,54 @@
 							aria-label="Search hostels"
 							placeholder="Search by name, location, or warden..."
 							type="text"
+							[value]="searchTerm()"
+							(input)="setSearchTerm($any($event.target).value)"
 						/>
 					</div>
 				</div>
 
 				<div class="flex flex-wrap gap-2">
-					<button
+					<label
 						class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2 text-sm font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-						type="button"
 					>
 						<span class="material-symbols-outlined text-lg">filter_alt</span>
-						Type: All
-						<span class="material-symbols-outlined text-lg">expand_more</span>
-					</button>
+						Type:
+						<select
+							class="bg-transparent text-sm outline-none"
+							aria-label="Filter hostels by type"
+							[value]="selectedType()"
+							(change)="setTypeFilter($any($event.target).value)"
+						>
+							<option value="ALL">All</option>
+							<option value="BOYS">Boys</option>
+							<option value="GIRLS">Girls</option>
+							<option value="CO-ED">Co-ed</option>
+						</select>
+					</label>
 
-					<button
+					<label
 						class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2 text-sm font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-						type="button"
 					>
 						<span class="material-symbols-outlined text-lg">signal_cellular_alt</span>
-						Status: Any
-						<span class="material-symbols-outlined text-lg">expand_more</span>
-					</button>
+						Status:
+						<select
+							class="bg-transparent text-sm outline-none"
+							aria-label="Filter hostels by status"
+							[value]="selectedStatus()"
+							(change)="setStatusFilter($any($event.target).value)"
+						>
+							<option value="ANY">Any</option>
+							<option value="AVAILABLE">Available</option>
+							<option value="ALMOST FULL">Almost Full</option>
+							<option value="FULLY OCCUPIED">Fully Occupied</option>
+							<option value="MAINTENANCE">Maintenance</option>
+						</select>
+					</label>
 
 					<button
 						class="text-primary hover:bg-primary/5 rounded-lg px-3 py-2 text-sm font-semibold"
 						type="button"
+						(click)="resetFilters()"
 					>
 						Reset Filters
 					</button>
@@ -121,7 +143,7 @@
 					</thead>
 
 					<tbody class="divide-slate-100 dark:divide-slate-800 divide-y">
-						@for (hostel of hostels(); track hostel.id) {
+						@for (hostel of filteredHostels(); track hostel.id) {
 							<tr class="hover:bg-slate-50/50 transition-colors dark:hover:bg-slate-800/30">
 								<td class="px-6 py-4">
 									<div class="flex flex-col">
@@ -136,7 +158,7 @@
 								</td>
 								<td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-400">{{ hostel.location }}</td>
 								<td class="px-6 py-4">
-									<div class="min-w-[120px] flex flex-col gap-1.5">
+									<div class="min-w-30 flex flex-col gap-1.5">
 										<div class="flex justify-between text-xs font-medium">
 											<span>{{ hostel.occupiedBeds }} / {{ hostel.capacity }}</span>
 											<span [class]="occupancyTextClass(hostel)">{{ occupancyPercentage(hostel) }}%</span>
@@ -199,6 +221,13 @@
 								</td>
 							</tr>
 						}
+						@if (!loading() && filteredHostels().length === 0) {
+							<tr>
+								<td class="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400" colspan="7">
+									No hostels match the current search/filter criteria.
+								</td>
+							</tr>
+						}
 					</tbody>
 				</table>
 			</div>
@@ -206,7 +235,7 @@
 			<div
 				class="border-slate-200 bg-slate-50/50 flex items-center justify-between border-t px-6 py-4 dark:border-slate-800 dark:bg-slate-800/30"
 			>
-				<span class="text-slate-500 text-sm">Showing {{ hostels().length }} hostels</span>
+				<span class="text-slate-500 text-sm">Showing {{ filteredHostels().length }} of {{ hostels().length }} hostels</span>
 				<div class="flex gap-2">
 					<button
 						class="text-slate-400 border-slate-200 cursor-not-allowed rounded border bg-white px-3 py-1 text-sm dark:border-slate-700 dark:bg-slate-800"
@@ -261,7 +290,7 @@
 			</div>
 			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
 				<p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase">Total Hostels</p>
-				<p class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ hostels().length }}</p>
+				<p class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ filteredHostels().length }}</p>
 			</div>
 		</div>
 	</main>
