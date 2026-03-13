@@ -1,8 +1,28 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HostelNavbar } from '../../components/hostel-navbar/hostel-navbar';
 import { Hostel, HostelStatus, HostelType } from '../../data/hostel.model';
 import { HostelStoreService } from '../../data/hostel-store.service';
+
+type TypeFilter = 'ALL' | HostelType;
+type StatusFilter = 'ANY' | HostelStatus;
+
+const TYPE_FILTER_VALUES: TypeFilter[] = ['ALL', 'BOYS', 'GIRLS', 'CO-ED'];
+const STATUS_FILTER_VALUES: StatusFilter[] = [
+  'ANY',
+  'AVAILABLE',
+  'ALMOST FULL',
+  'FULLY OCCUPIED',
+  'MAINTENANCE',
+];
+
+function isTypeFilter(value: string): value is TypeFilter {
+  return TYPE_FILTER_VALUES.includes(value as TypeFilter);
+}
+
+function isStatusFilter(value: string): value is StatusFilter {
+  return STATUS_FILTER_VALUES.includes(value as StatusFilter);
+}
 
 @Component({
   selector: 'app-hostel-list',
@@ -13,10 +33,59 @@ import { HostelStoreService } from '../../data/hostel-store.service';
 export class HostelList {
   private readonly hostelStore = inject(HostelStoreService);
 
+  readonly searchTerm = signal('');
+  readonly selectedType = signal<TypeFilter>('ALL');
+  readonly selectedStatus = signal<StatusFilter>('ANY');
+
   readonly hostels = this.hostelStore.hostels;
+  readonly filteredHostels = computed(() => {
+    const query = this.searchTerm().trim().toLowerCase();
+    const selectedType = this.selectedType();
+    const selectedStatus = this.selectedStatus();
+
+    return this.hostels().filter((hostel) => {
+      const matchesType = selectedType === 'ALL' || hostel.type === selectedType;
+      const matchesStatus = selectedStatus === 'ANY' || hostel.status === selectedStatus;
+
+      const matchesQuery =
+        query.length === 0
+        || hostel.name.toLowerCase().includes(query)
+        || hostel.location.toLowerCase().includes(query)
+        || hostel.wardenName.toLowerCase().includes(query)
+        || hostel.id.toLowerCase().includes(query);
+
+      return matchesType && matchesStatus && matchesQuery;
+    });
+  });
   readonly totals = this.hostelStore.totals;
   readonly loading = this.hostelStore.loading;
   readonly errorMessage = this.hostelStore.errorMessage;
+
+  setSearchTerm(value: string): void {
+    this.searchTerm.set(value);
+  }
+
+  setTypeFilter(value: string): void {
+    if (!isTypeFilter(value)) {
+      return;
+    }
+
+    this.selectedType.set(value);
+  }
+
+  setStatusFilter(value: string): void {
+    if (!isStatusFilter(value)) {
+      return;
+    }
+
+    this.selectedStatus.set(value);
+  }
+
+  resetFilters(): void {
+    this.searchTerm.set('');
+    this.selectedType.set('ALL');
+    this.selectedStatus.set('ANY');
+  }
 
   async deleteHostel(id: string): Promise<void> {
     if (typeof window !== 'undefined' && !window.confirm('Delete this hostel? This cannot be undone.')) {

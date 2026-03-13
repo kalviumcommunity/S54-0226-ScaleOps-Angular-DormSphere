@@ -1,1 +1,11 @@
-<router-outlet />
+<div class="app-shell">
+  <div class="app-loader-line" [class.app-loader-line--active]="isBusy()"></div>
+
+  <div class="app-loader-overlay" [class.app-loader-overlay--visible]="isBusy()" aria-hidden="true">
+    <span class="app-loader-spinner"></span>
+  </div>
+
+  <router-outlet />
+</div>
+
+<app-toast-container />
