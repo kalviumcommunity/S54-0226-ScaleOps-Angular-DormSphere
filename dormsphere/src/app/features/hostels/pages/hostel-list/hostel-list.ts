@@ -7,6 +7,23 @@ import { HostelStoreService } from '../../data/hostel-store.service';
 type TypeFilter = 'ALL' | HostelType;
 type StatusFilter = 'ANY' | HostelStatus;
 
+const TYPE_FILTER_VALUES: TypeFilter[] = ['ALL', 'BOYS', 'GIRLS', 'CO-ED'];
+const STATUS_FILTER_VALUES: StatusFilter[] = [
+  'ANY',
+  'AVAILABLE',
+  'ALMOST FULL',
+  'FULLY OCCUPIED',
+  'MAINTENANCE',
+];
+
+function isTypeFilter(value: string): value is TypeFilter {
+  return TYPE_FILTER_VALUES.includes(value as TypeFilter);
+}
+
+function isStatusFilter(value: string): value is StatusFilter {
+  return STATUS_FILTER_VALUES.includes(value as StatusFilter);
+}
+
 @Component({
   selector: 'app-hostel-list',
   imports: [HostelNavbar, RouterLink],
@@ -49,11 +66,19 @@ export class HostelList {
   }
 
   setTypeFilter(value: string): void {
-    this.selectedType.set(value as TypeFilter);
+    if (!isTypeFilter(value)) {
+      return;
+    }
+
+    this.selectedType.set(value);
   }
 
   setStatusFilter(value: string): void {
-    this.selectedStatus.set(value as StatusFilter);
+    if (!isStatusFilter(value)) {
+      return;
+    }
+
+    this.selectedStatus.set(value);
   }
 
   resetFilters(): void {
