@@ -25,8 +25,7 @@ pub fn create_routes(pool: PgPool) -> Router {
 
     Router::new()
         .route("/health", get(health::health_check))
-        .route("/api/login", post(auth::login))
-        .route("/api/login", options(preflight))
+        .route("/api/login", post(auth::login).options(preflight))
         .route("/api/hostels", get(hostels::list_hostels))
         .route("/api/hostels", post(hostels::create_hostel))
         .route("/api/hostels", options(preflight))

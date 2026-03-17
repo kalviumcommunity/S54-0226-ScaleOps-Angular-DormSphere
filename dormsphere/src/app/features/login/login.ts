@@ -4,7 +4,6 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { finalize, switchMap, timer } from 'rxjs';
-import { ToastService } from '../../core/ui/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,11 +16,10 @@ export class Login {
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-  private readonly toast = inject(ToastService);
 
   readonly loginForm = this.fb.group({
-    username: ['admin@university.edu', [Validators.required]],
-    password: ['admin@university.edu', [Validators.required]],
+    username: ['', [Validators.required]],
+    password: ['', [Validators.required]],
   });
 
   showPassword = false;
@@ -48,10 +46,7 @@ export class Login {
       )
       .subscribe({
         next: () => {
-          this.toast.success('Welcome Back', 'Login successful. Redirecting to dashboard...');
-          setTimeout(() => {
-            this.router.navigate(['/dashboard']);
-          }, 450);
+          this.router.navigate(['/dashboard']);
         },
         error: () => {
           // Error toast is handled globally by toast interceptor.

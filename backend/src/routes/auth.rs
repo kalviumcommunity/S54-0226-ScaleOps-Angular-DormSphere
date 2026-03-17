@@ -18,15 +18,22 @@ struct LoginErrorResponse {
 }
 
 pub async fn login(Json(info): Json<LoginRequest>) -> impl IntoResponse {
-    if info.username == "admin@university.edu" && info.password == "admin@university.edu" {
-        (
-            StatusCode::OK,
-            Json(LoginSuccessResponse {
-                message: "Login successful",
-            }),
-        )
-            .into_response()
-    } else {
+    let expected_username = std::env::var("AUTH_LOGIN_USERNAME").ok();
+    let expected_password = std::env::var("AUTH_LOGIN_PASSWORD").ok();
+
+    if let (Some(username), Some(password)) = (expected_username, expected_password) {
+        if info.username == username && info.password == password {
+            return (
+                StatusCode::OK,
+                Json(LoginSuccessResponse {
+                    message: "Login successful",
+                }),
+            )
+                .into_response();
+        }
+    }
+
+    {
         (
             StatusCode::UNAUTHORIZED,
             Json(LoginErrorResponse {
