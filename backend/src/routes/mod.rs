@@ -6,6 +6,7 @@ use tower_http::cors::{Any, CorsLayer};
 
 pub mod health;
 pub mod hostels;
+pub mod auth;
 
 async fn preflight() -> StatusCode {
     StatusCode::NO_CONTENT
@@ -24,6 +25,8 @@ pub fn create_routes(pool: PgPool) -> Router {
 
     Router::new()
         .route("/health", get(health::health_check))
+        .route("/api/login", post(auth::login))
+        .route("/api/login", options(preflight))
         .route("/api/hostels", get(hostels::list_hostels))
         .route("/api/hostels", post(hostels::create_hostel))
         .route("/api/hostels", options(preflight))

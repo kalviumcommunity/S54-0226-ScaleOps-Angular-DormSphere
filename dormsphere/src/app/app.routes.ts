@@ -3,9 +3,11 @@ import { HostelList } from './features/hostels/pages/hostel-list/hostel-list';
 import { HostelFormPage } from './features/hostels/pages/hostel-form-page/hostel-form-page';
 import { HostelDetailView } from './features/hostels/pages/hostel-detail-view/hostel-detail-view';
 import { NavigationPlaceholder } from './features/navigation/pages/navigation-placeholder/navigation-placeholder';
+import { Login } from './features/login/login';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'hostels' },
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: 'login', component: Login},
   { path: 'dashboard', component: NavigationPlaceholder },
   { path: 'hostels', component: HostelList },
   { path: 'hostels/new', component: HostelFormPage },
@@ -15,5 +17,5 @@ export const routes: Routes = [
   { path: 'students', component: NavigationPlaceholder },
   { path: 'maintenance', component: NavigationPlaceholder },
   { path: 'reports', component: NavigationPlaceholder },
-  { path: '**', redirectTo: 'hostels' },
+  { path: '**', redirectTo: 'login' },
 ];
