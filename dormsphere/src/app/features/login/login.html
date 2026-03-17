@@ -1,0 +1,92 @@
+<div class="login-screen flex h-screen w-full overflow-hidden bg-white dark:bg-slate-900">
+  <!-- Left Side: Illustration & Branding -->
+  <div class="login-panel hidden lg:flex lg:w-1/2 flex-col justify-between bg-primary p-12 text-white relative overflow-hidden">
+    <div class="relative z-10">
+      <div class="flex items-center gap-3 mb-12">
+        <div class="size-8 bg-white text-primary rounded-lg flex items-center justify-center">
+          <span class="material-symbols-outlined font-bold">domain</span>
+        </div>
+        <h1 class="text-2xl font-black tracking-tight">DormSphere</h1>
+      </div>
+      <div class="max-w-md">
+        <h2 class="text-5xl font-extrabold leading-tight mb-6">Modern Hostel Management for Universities.</h2>
+        <p class="text-primary-foreground/80 text-lg leading-relaxed opacity-90">
+          Streamline student applications, room assignments, and maintenance requests with our enterprise SaaS platform.
+        </p>
+      </div>
+    </div>
+    <div class="relative z-10 mt-auto">
+      <div class="flex items-center gap-4 p-4 bg-white/10 backdrop-blur-md rounded-xl border border-white/20">
+        <div class="size-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
+          <img alt="User" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIl4TqU0-WuAHy_SyVQh6qPrjfJIsVexfBpbW7lMGqxkDDLDSrqzgz79EMSLom0SNQbdSih9L49CUFSZ7GgKAnARdO6L1EstLFYzNsHyGuIgl8hIXUv0iQ6-8aLm_Vb94I-vIYQYzqWvEIt_uvca9Os_lhCcJvrLQlVCaKi3n_5xpSqoYynaDQMz-oSpv5DRksvy_sNMUbkPabUF7DsZ5kG4UOnI4M0__VUvyzVtxXfhm_dMlO6diGmLRv-QHaj9GNDqGL1oruLUI"/>
+        </div>
+        <div>
+          <p class="font-semibold">Dr. Julian Vance</p>
+          <p class="text-sm opacity-75">Director of Student Housing, Central State University</p>
+        </div>
+      </div>
+    </div>
+    <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-150 h-150 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-100 h-100 bg-white/10 rounded-full blur-2xl"></div>
+  </div>
+  <!-- Right Side: Login Form -->
+  <div class="login-panel login-panel--form w-full lg:w-1/2 flex flex-col items-center justify-center px-6 md:px-20 bg-white dark:bg-slate-900">
+    <div class="login-card w-full max-w-110">
+      <div class="lg:hidden flex items-center gap-2 mb-12">
+        <div class="size-8 text-white rounded-lg flex items-center justify-center bg-primary">
+          <span class="material-symbols-outlined">domain</span>
+        </div>
+        <span class="text-xl font-bold text-slate-900 dark:text-white">DormSphere</span>
+      </div>
+      <div class="mb-10">
+        <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Welcome Back</h2>
+        <p class="text-slate-500 dark:text-slate-400">Please enter your institutional credentials to access your dashboard.</p>
+      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6" novalidate>
+        <div class="space-y-2">
+          <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="username">Email or Username</label>
+          <div class="login-field relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">alternate_email</span>
+            <input formControlName="username" class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" id="username" placeholder="e.g. admin@university.edu" type="text"/>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="password">Password</label>
+            <span class="text-sm font-semibold text-slate-400" aria-disabled="true">Forgot password?</span>
+          </div>
+          <div class="login-field relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
+            <input formControlName="password" class="w-full pl-12 pr-12 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" id="password" placeholder="••••••••" [type]="showPassword ? 'text' : 'password'"/>
+            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" type="button" (click)="togglePassword()">
+              <span class="material-symbols-outlined text-xl">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <input class="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" id="remember" type="checkbox"/>
+          <label class="ml-2 text-sm text-slate-600 dark:text-slate-400" for="remember">Keep me signed in on this device</label>
+        </div>
+         <button class="login-submit w-full bg-primary hover:bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2" type="submit" [disabled]="loading">
+          @if (!loading) {
+            <span>Sign In</span>
+            <span class="material-symbols-outlined text-xl">arrow_forward</span>
+          } @else {
+            <span class="loader" aria-hidden="true"></span>
+            <span>Signing in...</span>
+          }
+        </button>
+      </form>
+      <div class="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+        <div class="flex gap-4">
+          <a class="hover:text-primary">Help Center</a>
+          <a class="hover:text-primary">Privacy Policy</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="size-2 bg-green-500 rounded-full"></span>
+          <span>All systems operational</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
