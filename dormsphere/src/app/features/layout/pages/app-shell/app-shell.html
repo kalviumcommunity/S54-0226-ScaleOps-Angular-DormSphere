@@ -1,0 +1,60 @@
+<div class="bg-background-light text-slate-900 font-display relative flex min-h-screen flex-col dark:bg-background-dark dark:text-slate-100">
+  <app-hostel-navbar />
+
+  <div class="relative flex flex-1">
+    @if (sidebarOpen()) {
+      <button
+        type="button"
+        class="fixed inset-0 z-30 bg-black/40 lg:hidden"
+        aria-label="Close sidebar"
+        (click)="closeSidebar()"
+      ></button>
+    }
+
+    <button
+      type="button"
+      class="interactive bg-primary fixed right-4 bottom-4 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full text-white shadow-lg lg:hidden"
+      aria-label="Toggle sidebar"
+      (click)="toggleSidebar()"
+    >
+      <span class="material-symbols-outlined text-xl">menu</span>
+    </button>
+
+    <aside
+      class="fixed top-14.25 left-0 z-40 h-[calc(100vh-57px)] w-72 border-r border-slate-200 bg-white px-4 py-5 shadow-xl transition-transform duration-200 dark:border-slate-800 dark:bg-slate-900 lg:sticky lg:top-14.25 lg:h-[calc(100vh-57px)] lg:translate-x-0 lg:shadow-none"
+      [class.-translate-x-full]="!sidebarOpen()"
+      [class.translate-x-0]="sidebarOpen()"
+    >
+      <nav class="space-y-2">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary font-semibold" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()">
+          <span class="material-symbols-outlined text-base">space_dashboard</span>
+          Dashboard
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/hostels" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+          <span class="material-symbols-outlined text-base">apartment</span>
+          Hostels
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/rooms" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+          <span class="material-symbols-outlined text-base">meeting_room</span>
+          Rooms
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/students" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+          <span class="material-symbols-outlined text-base">school</span>
+          Students
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/maintenance" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+          <span class="material-symbols-outlined text-base">construction</span>
+          Maintenance
+        </a>
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/reports" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+          <span class="material-symbols-outlined text-base">monitoring</span>
+          Reports
+        </a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:pl-4">
+      <router-outlet />
+    </main>
+  </div>
+</div>
