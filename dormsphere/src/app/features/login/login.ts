@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { catchError, finalize, switchMap, throwError, timer } from 'rxjs';
+import { finalize, switchMap, timer } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,6 @@ import { catchError, finalize, switchMap, throwError, timer } from 'rxjs';
 
 export class Login {
   private static readonly API_LOGIN_PATH = '/api/login';
-  private static readonly API_LOGIN_FALLBACK_URL = 'http://localhost:8001/api/login';
 
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
@@ -43,18 +42,10 @@ export class Login {
 
     timer(550)
       .pipe(
-        switchMap(() =>
-          this.http.post(Login.API_LOGIN_PATH, payload).pipe(
-            catchError((error: { status?: number }) => {
-              if (error?.status !== 404) {
-                return throwError(() => error);
-              }
-
-              return this.http.post(Login.API_LOGIN_FALLBACK_URL, payload);
-            }),
-          ),
-        ),
+        switchMap(() => this.http.post(Login.API_LOGIN_PATH, payload)),
         finalize(() => {
+          // Push the loading reset to the next tick to avoid NG0100 in dev mode
+          // when finalize runs during the same change-detection turn.
           setTimeout(() => {
             this.loading = false;
           });
