@@ -41,7 +41,7 @@ export class Login {
     this.loading = true;
     const payload = this.loginForm.getRawValue();
 
-    timer(550)
+    timer(550) // Artificial delay to prevent loading state flickering on fast requests.
       .pipe(
         switchMap(() =>
           this.http.post(Login.API_LOGIN_PATH, payload).pipe(
