@@ -1,71 +1,76 @@
 .login-screen {
-  animation: fade-in 360ms ease-out;
+	animation: fade-in 360ms ease-out;
 }
 
 .login-panel {
-  animation: rise-in 520ms ease-out both;
+	animation: rise-in 520ms ease-out both;
 }
 
 .login-panel--form {
-  animation-delay: 120ms;
+	animation-delay: 120ms;
 }
 
 .login-card {
-  animation: rise-in 560ms ease-out both;
-  animation-delay: 180ms;
+	animation: rise-in 560ms ease-out both;
+	animation-delay: 180ms;
 }
 
 .login-field {
-  transition: transform 180ms ease, box-shadow 180ms ease;
+	transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .login-field:focus-within {
-  transform: translateY(-1px) scale(1.005);
+	transform: translateY(-1px) scale(1.005);
 }
 
 .login-submit {
-  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+	transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
 }
 
-.login-submit:hover {
-  transform: translateY(-2px) scale(1.015);
+.login-submit:hover:not(:disabled) {
+	transform: translateY(-2px) scale(1.015);
 }
 
-.login-submit:active {
-  transform: translateY(0) scale(0.985);
+.login-submit:active:not(:disabled) {
+	transform: translateY(0) scale(0.985);
+}
+
+.login-submit:disabled {
+	cursor: not-allowed;
+	opacity: 0.9;
 }
 
 .loader {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgb(255 255 255 / 0.35);
-  border-top-color: #fff;
-  border-radius: 999px;
-  animation: spin 0.85s linear infinite;
+	width: 18px;
+	height: 18px;
+	border: 2px solid rgb(255 255 255 / 0.35);
+	border-top-color: #fff;
+	border-radius: 999px;
+	animation: spin 0.85s linear infinite;
 }
 
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+	to {
+		transform: rotate(360deg);
+	}
 }
