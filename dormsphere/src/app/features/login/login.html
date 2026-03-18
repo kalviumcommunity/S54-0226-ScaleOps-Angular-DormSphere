@@ -67,7 +67,7 @@
           <input class="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" id="remember" type="checkbox"/>
           <label class="ml-2 text-sm text-slate-600 dark:text-slate-400" for="remember">Keep me signed in on this device</label>
         </div>
-         <button class="login-submit w-full bg-primary hover:bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2" type="submit" [disabled]="loading">
+        <button class="login-submit w-full bg-primary hover:bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2" type="submit" [class.pointer-events-none]="loading" [class.opacity-90]="loading" [attr.aria-disabled]="loading ? 'true' : 'false'">
           @if (!loading) {
             <span>Sign In</span>
             <span class="material-symbols-outlined text-xl">arrow_forward</span>

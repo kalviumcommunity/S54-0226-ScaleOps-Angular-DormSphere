@@ -4,18 +4,26 @@ import { HostelFormPage } from './features/hostels/pages/hostel-form-page/hostel
 import { HostelDetailView } from './features/hostels/pages/hostel-detail-view/hostel-detail-view';
 import { NavigationPlaceholder } from './features/navigation/pages/navigation-placeholder/navigation-placeholder';
 import { Login } from './features/login/login';
+import { Dashboard } from './features/dashboard/pages/dashboard/dashboard';
+import { AppShell } from './features/layout/pages/app-shell/app-shell';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login},
-  { path: 'dashboard', component: NavigationPlaceholder },
-  { path: 'hostels', component: HostelList },
-  { path: 'hostels/new', component: HostelFormPage },
   { path: 'hostels/:id', component: HostelDetailView },
-  { path: 'hostels/:id/edit', component: HostelFormPage },
-  { path: 'rooms', component: NavigationPlaceholder },
-  { path: 'students', component: NavigationPlaceholder },
-  { path: 'maintenance', component: NavigationPlaceholder },
-  { path: 'reports', component: NavigationPlaceholder },
+  {
+    path: '',
+    component: AppShell,
+    children: [
+      { path: 'dashboard', component: Dashboard },
+      { path: 'hostels', component: HostelList },
+      { path: 'hostels/new', component: HostelFormPage },
+      { path: 'hostels/:id/edit', component: HostelFormPage },
+      { path: 'rooms', component: NavigationPlaceholder },
+      { path: 'students', component: NavigationPlaceholder },
+      { path: 'maintenance', component: NavigationPlaceholder },
+      { path: 'reports', component: NavigationPlaceholder },
+    ],
+  },
   { path: '**', redirectTo: 'login' },
 ];

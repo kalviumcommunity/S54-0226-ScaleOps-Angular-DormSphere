@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { finalize, switchMap, timer } from 'rxjs';
+import { catchError, finalize, switchMap, throwError, timer } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +13,9 @@ import { finalize, switchMap, timer } from 'rxjs';
 })
 
 export class Login {
+  private static readonly API_LOGIN_PATH = '/api/login';
+  private static readonly API_LOGIN_FALLBACK_URL = 'http://localhost:8001/api/login';
+
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
@@ -36,12 +39,25 @@ export class Login {
     }
 
     this.loading = true;
+    const payload = this.loginForm.getRawValue();
 
     timer(550)
       .pipe(
-        switchMap(() => this.http.post('/api/login', this.loginForm.getRawValue())),
+        switchMap(() =>
+          this.http.post(Login.API_LOGIN_PATH, payload).pipe(
+            catchError((error: { status?: number }) => {
+              if (error?.status !== 404) {
+                return throwError(() => error);
+              }
+
+              return this.http.post(Login.API_LOGIN_FALLBACK_URL, payload);
+            }),
+          ),
+        ),
         finalize(() => {
-          this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
+          });
         }),
       )
       .subscribe({
