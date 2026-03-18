@@ -1,0 +1,159 @@
+<main class="px-6 py-8">
+  <div class="mx-auto w-full max-w-7xl">
+    <section class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div class="flex flex-col gap-1">
+        <h1 class="text-slate-900 text-3xl font-extrabold tracking-tight dark:text-slate-100">Dashboard</h1>
+        <p class="text-slate-500 text-base dark:text-slate-400">Operations overview for hostels, occupancy, and daily actions.</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          class="interactive text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+          (click)="refresh()"
+        >
+          <span class="material-symbols-outlined text-lg">sync</span>
+          Refresh
+        </button>
+
+        <button
+          type="button"
+          class="interactive bg-primary flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
+          (click)="addHostel()"
+        >
+          <span class="material-symbols-outlined text-lg">add</span>
+          Add Hostel
+        </button>
+      </div>
+    </section>
+
+    <section class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <label class="relative block w-full md:max-w-md">
+          <span class="material-symbols-outlined absolute top-1/2 left-3 -translate-y-1/2 text-slate-400">search</span>
+          <input
+            type="text"
+            aria-label="Search dashboard hostels"
+            placeholder="Search hostels, status, type, or ID"
+            class="focus:ring-primary focus:border-primary w-full rounded-lg border-slate-200 bg-slate-50 py-2.5 pr-4 pl-10 text-sm dark:border-slate-700 dark:bg-slate-800"
+            [value]="searchQuery()"
+            (input)="setSearchQuery($any($event.target).value)"
+          />
+        </label>
+
+        <div class="flex items-center gap-2">
+          <span class="text-slate-500 text-xs font-semibold tracking-wide uppercase dark:text-slate-400">Signed in as</span>
+          <span class="text-slate-800 rounded-md bg-slate-100 px-2.5 py-1 text-sm font-semibold dark:bg-slate-800 dark:text-slate-200">{{ adminName }}</span>
+          @if (searchQuery().length > 0) {
+            <button
+              type="button"
+              class="text-primary hover:bg-primary/5 rounded-lg px-3 py-2 text-sm font-semibold"
+              (click)="clearSearch()"
+            >
+              Clear
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    @if (errorMessage(); as error) {
+      <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+        {{ error }}
+      </div>
+    }
+
+    <section class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      @if (loading()) {
+        @for (placeholder of [1, 2, 3, 4]; track placeholder) {
+          <article class="skeleton-card rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="skeleton-line mb-3 h-3 w-24 rounded"></div>
+            <div class="skeleton-line mb-2 h-7 w-16 rounded"></div>
+            <div class="skeleton-line h-3 w-28 rounded"></div>
+          </article>
+        }
+      } @else {
+        @for (kpi of kpis(); track kpi.label) {
+          <article class="kpi-card rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">{{ kpi.label }}</p>
+            <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ kpi.value }}</h2>
+            <p class="mt-1 text-xs font-semibold" [class]="kpiTrendClass(kpi.trend)">{{ trendLabel(kpi.trend) }}</p>
+            <p class="text-slate-400 mt-2 text-xs">{{ kpi.helper }}</p>
+          </article>
+        }
+      }
+    </section>
+
+    <section class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <article class="lg:col-span-2 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 class="text-lg font-bold">Occupancy Trend</h3>
+            <p class="text-slate-500 text-sm dark:text-slate-400">{{ occupancySummary() }}</p>
+          </div>
+        </div>
+
+        @if (loading()) {
+          <div class="chart-skeleton h-64 rounded-lg"></div>
+        } @else {
+          <div class="h-64 rounded-lg bg-slate-50 p-4 dark:bg-slate-800/40">
+            <div class="flex h-full items-end gap-3">
+              @for (item of occupancyData(); track item.month) {
+                <div class="flex min-w-0 flex-1 flex-col items-center gap-2">
+                  <div class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">{{ item.value }}%</div>
+                  <div class="bar-track relative h-full w-full overflow-hidden rounded-md bg-primary/15">
+                    <div class="bar-fill bg-primary absolute right-0 bottom-0 left-0 rounded-md" [style.height.%]="item.value"></div>
+                  </div>
+                  <div class="text-[11px] font-semibold tracking-wide text-slate-500 uppercase dark:text-slate-400">{{ item.month }}</div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </article>
+
+      <div class="space-y-6">
+        <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <h3 class="mb-3 text-base font-bold">Quick Actions</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" (click)="addStudent()" class="action-btn">New Student</button>
+            <button type="button" (click)="allocateRoom()" class="action-btn">Allocate Room</button>
+            <button type="button" (click)="generateInvoice()" class="action-btn">Invoice</button>
+            <button type="button" (click)="broadcast()" class="action-btn">Broadcast</button>
+          </div>
+        </article>
+
+        <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div class="mb-3 flex items-center justify-between gap-2">
+            <h3 class="text-base font-bold">Recent Activities</h3>
+            <span class="text-xs text-slate-400">Auto-generated from occupancy data</span>
+          </div>
+
+          @if (loading()) {
+            <div class="space-y-3">
+              @for (item of [1, 2, 3]; track item) {
+                <div class="space-y-2">
+                  <div class="skeleton-line h-3 w-4/5 rounded"></div>
+                  <div class="skeleton-line h-3 w-full rounded"></div>
+                  <div class="skeleton-line h-2.5 w-16 rounded"></div>
+                </div>
+              }
+            </div>
+          } @else if (activities().length === 0) {
+            <p class="text-slate-500 text-sm dark:text-slate-400">No activity yet. Add hostels to begin tracking operations.</p>
+          } @else {
+            <div class="space-y-3">
+              @for (activity of activities(); track activity.title) {
+                <div class="rounded-lg border border-slate-200 p-3 dark:border-slate-800">
+                  <p class="text-sm font-semibold">{{ activity.title }}</p>
+                  <p class="text-slate-500 mt-1 text-xs dark:text-slate-400">{{ activity.description }}</p>
+                  <p class="text-slate-400 mt-2 text-[11px] font-semibold tracking-wide uppercase">{{ activity.time }}</p>
+                </div>
+              }
+            </div>
+          }
+        </article>
+      </div>
+    </section>
+  </div>
+</main>

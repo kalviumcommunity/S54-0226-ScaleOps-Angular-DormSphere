@@ -1,6 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { HostelNavbar } from '../../components/hostel-navbar/hostel-navbar';
 import { Hostel, HostelStatus, HostelType } from '../../data/hostel.model';
 import { HostelStoreService } from '../../data/hostel-store.service';
 
@@ -26,7 +25,7 @@ function isStatusFilter(value: string): value is StatusFilter {
 
 @Component({
   selector: 'app-hostel-list',
-  imports: [HostelNavbar, RouterLink],
+  imports: [RouterLink],
   templateUrl: './hostel-list.html',
   styleUrl: './hostel-list.css',
 })

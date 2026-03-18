@@ -33,13 +33,11 @@ pub async fn login(Json(info): Json<LoginRequest>) -> impl IntoResponse {
         }
     }
 
-    {
-        (
-            StatusCode::UNAUTHORIZED,
-            Json(LoginErrorResponse {
-                message: "Invalid credentials",
-            }),
-        )
-            .into_response()
-    }
+    (
+        StatusCode::UNAUTHORIZED,
+        Json(LoginErrorResponse {
+            message: "Invalid credentials",
+        }),
+    )
+        .into_response()
 }

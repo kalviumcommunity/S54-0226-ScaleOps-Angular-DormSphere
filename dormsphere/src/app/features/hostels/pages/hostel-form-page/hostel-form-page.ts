@@ -3,7 +3,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { HostelNavbar } from '../../components/hostel-navbar/hostel-navbar';
 import { HostelStatus, HostelType, NewHostelInput } from '../../data/hostel.model';
 import { HostelStoreService } from '../../data/hostel-store.service';
 
@@ -28,7 +27,7 @@ function defaultWardenExtension(capacity: number): string {
 
 @Component({
   selector: 'app-hostel-form-page',
-  imports: [ReactiveFormsModule, RouterLink, HostelNavbar],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './hostel-form-page.html',
   styleUrl: './hostel-form-page.css',
 })

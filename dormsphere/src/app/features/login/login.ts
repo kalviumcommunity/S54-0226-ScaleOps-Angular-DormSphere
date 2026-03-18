@@ -13,6 +13,8 @@ import { finalize, switchMap, timer } from 'rxjs';
 })
 
 export class Login {
+  private static readonly API_LOGIN_PATH = '/api/login';
+
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
@@ -36,12 +38,17 @@ export class Login {
     }
 
     this.loading = true;
+    const payload = this.loginForm.getRawValue();
 
-    timer(550)
+    timer(550) // Artificial delay to prevent loading state flickering on fast requests.
       .pipe(
-        switchMap(() => this.http.post('/api/login', this.loginForm.getRawValue())),
+        switchMap(() => this.http.post(Login.API_LOGIN_PATH, payload)),
         finalize(() => {
-          this.loading = false;
+          // Push the loading reset to the next tick to avoid NG0100 in dev mode
+          // when finalize runs during the same change-detection turn.
+          setTimeout(() => {
+            this.loading = false;
+          });
         }),
       )
       .subscribe({
