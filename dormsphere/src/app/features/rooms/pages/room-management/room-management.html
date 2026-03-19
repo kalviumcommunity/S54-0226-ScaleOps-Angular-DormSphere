@@ -46,7 +46,7 @@
             <button
               type="button"
               class="rounded-lg border px-3 py-2 text-xs font-semibold tracking-wide uppercase transition-colors"
-              [class]="statusButtonClass(filter() === item)"
+              [ngClass]="statusButtonClass(filter() === item)"
               (click)="setFilter(item)"
             >
               {{ item }}
@@ -145,9 +145,25 @@
         <span class="text-slate-500 text-sm">{{ pageSummary() }}</span>
 
         <div class="flex items-center gap-2">
-          <button type="button" class="pager-btn" [disabled]="page() <= 1" (click)="prevPage()">Previous</button>
-          <span class="text-slate-500 text-sm dark:text-slate-400">Page {{ page() }} / {{ totalPages() }}</span>
-          <button type="button" class="pager-btn" [disabled]="page() >= totalPages()" (click)="nextPage()">Next</button>
+          <button
+             type="button"
+             class="pager-btn"
+             [disabled]="(page() > totalPages() ? totalPages() : page()) <= 1"
+             (click)="prevPage()"
+           >
+             Previous
+           </button>
+           <span class="text-slate-500 text-sm dark:text-slate-400">
+             Page {{ page() > totalPages() ? totalPages() : page() }} / {{ totalPages() }}
+           </span>
+           <button
+             type="button"
+             class="pager-btn"
+             [disabled]="(page() > totalPages() ? totalPages() : page()) >= totalPages()"
+             (click)="nextPage()"
+           >
+             Next
+           </button>
         </div>
       </div>
     </section>

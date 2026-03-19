@@ -51,6 +51,11 @@ export class RoomFormPage {
       const room = this.editingRoom();
 
       if (!room) {
+         this.form.reset({
+           hostelId: '',
+           number: '',
+           capacity: 2,
+         });
         return;
       }
 

@@ -8,8 +8,7 @@ import { ToastService } from '../../../../core/ui/toast.service';
 
 type RoomFilter = 'ALL' | RoomStatus;
 
-const FILTER_VALUES: RoomFilter[] = ['ALL', 'AVAILABLE', 'OCCUPIED', 'MAINTENANCE'];
-
+const FILTER_VALUES: RoomFilter[] = ['ALL', 'AVAILABLE', 'OCCUPIED'];
 function isRoomFilter(value: string): value is RoomFilter {
   return FILTER_VALUES.includes(value as RoomFilter);
 }
@@ -51,11 +50,11 @@ export class RoomManagement {
       }
 
       return (
-        room.number.toLowerCase().includes(query)
-        || room.name.toLowerCase().includes(query)
-        || room.block.toLowerCase().includes(query)
-        || room.floor.toLowerCase().includes(query)
-        || room.type.toLowerCase().includes(query)
+        room.number.toLowerCase().includes(query) ||
+        room.name.toLowerCase().includes(query) ||
+        room.block.toLowerCase().includes(query) ||
+        room.floor.toLowerCase().includes(query) ||
+        room.type.toLowerCase().includes(query)
       );
     });
   });
@@ -122,7 +121,10 @@ export class RoomManagement {
   }
 
   async deleteRoom(id: string): Promise<void> {
-    if (typeof window !== 'undefined' && !window.confirm('Delete this room? This cannot be undone.')) {
+    if (
+      typeof window !== 'undefined' &&
+      !window.confirm('Delete this room? This cannot be undone.')
+    ) {
       return;
     }
 

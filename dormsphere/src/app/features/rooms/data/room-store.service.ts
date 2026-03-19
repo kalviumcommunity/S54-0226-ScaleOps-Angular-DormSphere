@@ -28,7 +28,7 @@ export class RoomStoreService {
     const rooms = this.rooms();
     const total = rooms.length;
     const occupied = rooms.filter((room) => room.status === 'OCCUPIED').length;
-    const maintenance = rooms.filter((room) => room.status === 'MAINTENANCE').length;
+    const maintenance = rooms.filter((room) => room.capacity === 0).length;
     const available = Math.max(total - occupied - maintenance, 0);
 
     const totalCapacity = rooms.reduce((sum, room) => sum + room.capacity, 0);
