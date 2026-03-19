@@ -14,7 +14,7 @@
     <div class="hidden items-center gap-6 md:flex">
       <a
         routerLink="/dashboard"
-        routerLinkActive="text-primary"
+        routerLinkActive="text-primary border-primary border-b-2 py-1 font-semibold"
         [routerLinkActiveOptions]="{ exact: true }"
         class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
         >Dashboard</a
@@ -27,7 +27,8 @@
       >
       <a
         routerLink="/rooms"
-        routerLinkActive="text-primary"
+        routerLinkActive="text-primary border-primary border-b-2 py-1 font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
         class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
         >Rooms</a
       >

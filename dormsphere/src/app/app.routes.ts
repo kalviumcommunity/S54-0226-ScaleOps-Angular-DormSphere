@@ -6,11 +6,12 @@ import { NavigationPlaceholder } from './features/navigation/pages/navigation-pl
 import { Login } from './features/login/login';
 import { Dashboard } from './features/dashboard/pages/dashboard/dashboard';
 import { AppShell } from './features/layout/pages/app-shell/app-shell';
+import { RoomManagement } from './features/rooms/pages/room-management/room-management';
+import { RoomFormPage } from './features/rooms/pages/room-form-page/room-form-page';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: Login },
-  { path: 'hostels/:id', component: HostelDetailView },
   {
     path: '',
     component: AppShell,
@@ -19,7 +20,10 @@ export const routes: Routes = [
       { path: 'hostels', component: HostelList },
       { path: 'hostels/new', component: HostelFormPage },
       { path: 'hostels/:id/edit', component: HostelFormPage },
-      { path: 'rooms', component: NavigationPlaceholder },
+      { path: 'hostels/:id', component: HostelDetailView },
+      { path: 'rooms', component: RoomManagement },
+      { path: 'rooms/new', component: RoomFormPage },
+      { path: 'rooms/:id/edit', component: RoomFormPage },
       { path: 'students', component: NavigationPlaceholder },
       { path: 'maintenance', component: NavigationPlaceholder },
       { path: 'reports', component: NavigationPlaceholder },

@@ -1,0 +1,88 @@
+<main class="mx-auto w-full max-w-4xl flex-1 px-6 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold tracking-tight">{{ isEditMode() ? 'Edit Room' : 'Add New Room' }}</h1>
+    <p class="text-slate-500 mt-1">
+      {{
+        isEditMode()
+          ? 'Update room details and keep room assignments accurate.'
+          : 'Create a room and attach it to an existing hostel.'
+      }}
+    </p>
+    <p class="mt-2 text-sm text-slate-400">
+      Backend fields saved: hostel, room number, and capacity.
+    </p>
+  </div>
+
+  @if (errorMessage(); as error) {
+    <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+      {{ error }}
+    </div>
+  }
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="panel-surface p-6"
+  >
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Hostel
+        <select
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="hostelId"
+        >
+          <option value="">Select hostel</option>
+          @for (hostel of hostels(); track hostel.id) {
+            <option [value]="hostel.id">{{ hostel.name }} ({{ hostel.location }})</option>
+          }
+        </select>
+        <span class="text-xs font-normal text-slate-400">Required to map room ownership.</span>
+      </label>
+
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Room Number
+        <input
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="number"
+          placeholder="Example: 304-B"
+          type="text"
+        />
+        <span class="text-xs font-normal text-slate-400">Must be unique inside a hostel.</span>
+      </label>
+
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Capacity
+        <input
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="capacity"
+          min="1"
+          type="number"
+        />
+        <span class="text-xs font-normal text-slate-400">Number of beds available in this room.</span>
+      </label>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <button
+        class="bg-primary inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
+        type="submit"
+        [disabled]="saving() || loading()"
+      >
+        <span class="material-symbols-outlined text-lg">save</span>
+        {{ isEditMode() ? 'Update Room' : 'Save Room' }}
+      </button>
+
+      <a
+        class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+        routerLink="/rooms"
+      >
+        <span class="material-symbols-outlined text-lg">close</span>
+        Cancel
+      </a>
+    </div>
+
+    @if (saving()) {
+      <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">Saving room details to backend...</p>
+    }
+  </form>
+</main>

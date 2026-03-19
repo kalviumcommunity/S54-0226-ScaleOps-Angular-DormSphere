@@ -1,0 +1,35 @@
+<section class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+  @if (loading) {
+    @for (item of [1, 2, 3, 4]; track item) {
+      <article class="panel-surface p-4">
+        <div class="skeleton-line mb-3 h-3 w-24 rounded"></div>
+        <div class="skeleton-line mb-2 h-7 w-16 rounded"></div>
+        <div class="skeleton-line h-3 w-28 rounded"></div>
+      </article>
+    }
+  } @else {
+    <article class="panel-surface p-4">
+      <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">Total Rooms</p>
+      <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats.total }}</h2>
+      <p class="text-slate-400 mt-2 text-xs">Current managed inventory</p>
+    </article>
+
+    <article class="panel-surface p-4">
+      <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">Available</p>
+      <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats.available }}</h2>
+      <p class="text-slate-400 mt-2 text-xs">Ready for allocation</p>
+    </article>
+
+    <article class="panel-surface p-4">
+      <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">Occupied</p>
+      <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats.occupied }}</h2>
+      <p class="text-slate-400 mt-2 text-xs">Active resident assignments</p>
+    </article>
+
+    <article class="panel-surface p-4">
+      <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">Occupancy Rate</p>
+      <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats.occupancyRate.toFixed(1) }}%</h2>
+      <p class="text-slate-400 mt-2 text-xs">Based on current bed usage</p>
+    </article>
+  }
+</section>
