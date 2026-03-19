@@ -120,12 +120,6 @@ export class HostelFormPage {
     if (hostel) {
       this.router.navigate(['/hostels', hostel.id]);
     }
-    
-    if (!hostel) {
-      return;
-    }
-
-    this.router.navigate(['/hostels', hostel.id]);
   }
 
 }

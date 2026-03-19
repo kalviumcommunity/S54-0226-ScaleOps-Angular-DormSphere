@@ -7,6 +7,7 @@ use tower_http::cors::{AllowOrigin, Any, CorsLayer};
 pub mod health;
 pub mod hostels;
 pub mod auth;
+pub mod rooms;
 
 async fn preflight() -> StatusCode {
     StatusCode::NO_CONTENT
@@ -57,6 +58,13 @@ pub fn create_routes(pool: PgPool) -> Router {
         )
         .route("/api/hostels/:id", options(preflight))
         .route("/api/hostels/:id", delete(hostels::delete_hostel))
+        .route("/api/rooms", get(rooms::list_rooms))
+        .route("/api/rooms", post(rooms::create_room))
+        .route("/api/rooms", options(preflight))
+        .route("/api/rooms/:id", get(rooms::get_room))
+        .route("/api/rooms/:id", put(rooms::update_room))
+        .route("/api/rooms/:id", delete(rooms::delete_room))
+        .route("/api/rooms/:id", options(preflight))
         .layer(cors)
         .with_state(pool)
 }
