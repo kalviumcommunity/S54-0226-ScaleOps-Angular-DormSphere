@@ -15,6 +15,11 @@ struct ErrorResponse {
 }
 
 #[derive(Serialize)]
+struct SuccessResponse {
+    message: &'static str,
+}
+
+#[derive(Serialize)]
 struct ErrorDetail {
     code: &'static str,
     message: &'static str,
@@ -191,14 +196,33 @@ pub async fn delete_room(Path(id): Path<i32>, State(pool): State<PgPool>) -> imp
     match result {
         Ok(res) => {
             if res.rows_affected() == 0 {
-                (StatusCode::NOT_FOUND, "Room not found").into_response()
+                let error_response = ErrorResponse {
+                    error: ErrorDetail {
+                        code: "ROOM_NOT_FOUND",
+                        message: "Room not found",
+                    },
+                };
+
+                (StatusCode::NOT_FOUND, Json(error_response)).into_response()
             } else {
-                (StatusCode::OK, "Room deleted successfully").into_response()
+                let success_response = SuccessResponse {
+                    message: "Room deleted successfully",
+                };
+
+                (StatusCode::OK, Json(success_response)).into_response()
             }
         }
         Err(err) => {
             eprintln!("Delete error: {}", err);
-            (StatusCode::INTERNAL_SERVER_ERROR, "Failed to delete room").into_response()
+
+            let error_response = ErrorResponse {
+                error: ErrorDetail {
+                    code: "ROOM_DELETE_FAILED",
+                    message: "Failed to delete room",
+                },
+            };
+
+            (StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)).into_response()
         }
     }
 }
