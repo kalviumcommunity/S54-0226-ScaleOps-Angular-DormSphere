@@ -8,6 +8,7 @@ pub mod health;
 pub mod hostels;
 pub mod auth;
 pub mod rooms;
+pub mod students;
 
 async fn preflight() -> StatusCode {
     StatusCode::NO_CONTENT
@@ -65,6 +66,13 @@ pub fn create_routes(pool: PgPool) -> Router {
         .route("/api/rooms/:id", put(rooms::update_room))
         .route("/api/rooms/:id", delete(rooms::delete_room))
         .route("/api/rooms/:id", options(preflight))
+        .route("/api/students", get(students::list_students))
+        .route("/api/students", post(students::create_student))
+        .route("/api/students", options(preflight))
+        .route("/api/students/:id", get(students::get_student))
+        .route("/api/students/:id", put(students::update_student))
+        .route("/api/students/:id", delete(students::delete_student))
+        .route("/api/students/:id", options(preflight))
         .layer(cors)
         .with_state(pool)
 }
