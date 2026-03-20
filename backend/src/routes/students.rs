@@ -216,13 +216,15 @@ pub async fn update_student(
     }
 
     if let Some(status) = payload.status.as_ref() {
-        if has_updates {
-            query.push(", ");
-        }
-
         let normalized = status.trim().to_uppercase();
-        query.push("status = ").push_bind(normalized);
-        has_updates = true;
+        // Only update status if it is one of the supported lifecycle values.
+        if matches!(normalized.as_str(), "ACTIVE" | "PENDING" | "GRADUATED") {
+            if has_updates {
+                query.push(", ");
+            }
+            query.push("status = ").push_bind(normalized);
+            has_updates = true;
+        }
     }
 
     if let Some(avatar_url) = payload.avatar_url.as_ref() {

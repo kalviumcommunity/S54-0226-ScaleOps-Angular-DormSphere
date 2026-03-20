@@ -52,8 +52,10 @@ export class StudentStoreService {
     const values = new Set<string>();
 
     for (const student of this.students()) {
-      if (student.department.trim().length > 0) {
-        values.add(student.department);
+      const department = student.department.trim();
+
+      if (department.length > 0) {
+        values.add(department);
       }
     }
 

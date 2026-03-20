@@ -52,8 +52,7 @@
             <button
               type="button"
               class="rounded-lg border px-3 py-2 text-xs font-semibold tracking-wide uppercase transition-colors"
-              [class.bg-blue-500]="filter() === item"
-              [class.text-white]="filter() === item"
+              [ngClass]="statusButtonClass(filter() === item)"
               (click)="setFilter(item)"
             >
               {{ item }}

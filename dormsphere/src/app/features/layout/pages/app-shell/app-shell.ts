@@ -1,6 +1,5 @@
-import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { isPlatformBrowser } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
@@ -16,7 +15,6 @@ import { HostelStoreService } from '../../../hostels/data/hostel-store.service';
 export class AppShell {
   private readonly router = inject(Router);
   private readonly hostelStore = inject(HostelStoreService);
-  private readonly platformId = inject(PLATFORM_ID);
 
   readonly sidebarOpen = signal(false);
 
@@ -38,12 +36,6 @@ export class AppShell {
 
     return this.hostelStore.getHostelById(match[1]);
   });
-
-  constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      void this.hostelStore.loadHostels();
-    }
-  }
 
   toggleSidebar(): void {
     this.sidebarOpen.update((open) => !open);
