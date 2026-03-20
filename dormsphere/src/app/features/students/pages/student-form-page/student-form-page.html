@@ -1,0 +1,127 @@
+<main class="mx-auto w-full max-w-4xl flex-1 px-6 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold tracking-tight">{{ isEditMode() ? 'Edit Student' : 'Add New Student' }}</h1>
+    <p class="text-slate-500 mt-1">
+      {{
+        isEditMode()
+          ? 'Update student profile information and room assignment.'
+          : 'Create a student record and optionally assign a room immediately.'
+      }}
+    </p>
+    <p class="mt-2 text-sm text-slate-400">
+      Backend fields saved: name, email, phone, department, status, avatar URL, and room assignment.
+    </p>
+  </div>
+
+  @if (errorMessage(); as error) {
+    <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+      {{ error }}
+    </div>
+  }
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="panel-surface p-6"
+  >
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Student Name
+        <input
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="name"
+          placeholder="Example: Alex Martin"
+          type="text"
+        />
+      </label>
+
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Email
+        <input
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="email"
+          placeholder="Example: alex@uni.com"
+          type="email"
+        />
+      </label>
+
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Phone
+        <input
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="phone"
+          placeholder="Example: 9999999999"
+          type="text"
+        />
+      </label>
+
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Department
+        <input
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="department"
+          placeholder="Example: CSE"
+          type="text"
+        />
+      </label>
+
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Status
+        <select
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="status"
+        >
+          @for (status of statuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-2 text-sm font-semibold">
+        Room Assignment
+        <select
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="roomId"
+        >
+          <option value="">Waitlist (No room)</option>
+          @for (room of rooms(); track room.id) {
+            <option [value]="room.id">{{ roomLabel(room.id) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="md:col-span-2 flex flex-col gap-2 text-sm font-semibold">
+        Avatar URL (optional)
+        <input
+          class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          formControlName="avatarUrl"
+          placeholder="Example: https://i.pravatar.cc/64?img=12"
+          type="url"
+        />
+      </label>
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <button
+        class="bg-primary inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
+        type="submit"
+        [disabled]="saving() || loading()"
+      >
+        <span class="material-symbols-outlined text-lg">save</span>
+        {{ isEditMode() ? 'Update Student' : 'Save Student' }}
+      </button>
+
+      <a
+        class="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+        routerLink="/students"
+      >
+        <span class="material-symbols-outlined text-lg">close</span>
+        Cancel
+      </a>
+    </div>
+
+    @if (saving()) {
+      <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">Saving student details to backend...</p>
+    }
+  </form>
+</main>

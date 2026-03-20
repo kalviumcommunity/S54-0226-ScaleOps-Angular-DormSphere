@@ -34,6 +34,9 @@ CREATE TABLE students (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     phone VARCHAR(20),
+    department VARCHAR(100),
+    status VARCHAR(30) DEFAULT 'ACTIVE',
+    avatar_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

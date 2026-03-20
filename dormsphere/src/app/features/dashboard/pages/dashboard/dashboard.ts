@@ -171,7 +171,7 @@ export class Dashboard {
   }
 
   addStudent(): void {
-    this.router.navigate(['/students']);
+    this.router.navigate(['/students/new']);
   }
 
   allocateRoom(): void {
