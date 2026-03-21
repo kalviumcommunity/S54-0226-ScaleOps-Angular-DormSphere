@@ -45,7 +45,7 @@
           @for (item of ['ALL', 'AVAILABLE', 'OCCUPIED']; track item) {
             <button
               type="button"
-              class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold tracking-wide text-slate-600 uppercase transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold tracking-wide text-slate-600 uppercase transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800" [class.bg-primary]="filter() === item" [class.text-white]="filter() === item" [class.border-primary]="filter() === item"
               (click)="setFilter(item)"
             >
               {{ item }}
