@@ -78,7 +78,7 @@
 
 .dark .table-action-btn:hover,
 .dark .pager-btn:hover:not(:disabled) {
-	background: rgb(51 65 85);
+	background: rgb(30 41 59);
 }
 
 @media (max-width: 900px) {
