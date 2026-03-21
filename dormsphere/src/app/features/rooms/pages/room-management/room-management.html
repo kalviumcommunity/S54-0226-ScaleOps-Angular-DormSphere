@@ -64,7 +64,9 @@
     </section>
 
     @if (errorMessage(); as error) {
-      <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300">
+      <div
+        class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300"
+      >
         {{ error }}
       </div>
     }
@@ -108,7 +110,9 @@
                   </td>
                   <td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-300">{{ room.floor }}</td>
                   <td class="px-6 py-4">
-                    <span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                    <span
+                      class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                    >
                       {{ room.type }}
                     </span>
                   </td>
@@ -120,9 +124,19 @@
                   </td>
                   <td class="px-6 py-4 text-right">
                     <div class="flex justify-end gap-2">
-                      <button type="button" class="table-action-btn" (click)="editRoom(room.id)">Edit</button>
-                      <button type="button" class="table-action-btn" (click)="deleteRoom(room.id)">Delete</button>
-                      <button type="button" class="table-action-btn table-action-btn--link" (click)="viewHostel(room)">Hostel</button>
+                      <button type="button" class="table-action-btn" (click)="editRoom(room.id)">
+                        Edit
+                      </button>
+                      <button type="button" class="table-action-btn" (click)="deleteRoom(room.id)">
+                        Delete
+                      </button>
+                      <button
+                        type="button"
+                        class="table-action-btn table-action-btn--link"
+                        (click)="viewHostel(room)"
+                      >
+                        Hostel
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -130,7 +144,10 @@
 
               @if (pagedRooms().length === 0) {
                 <tr>
-                  <td class="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400" colspan="6">
+                  <td
+                    class="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400"
+                    colspan="6"
+                  >
                     No rooms match the selected criteria.
                   </td>
                 </tr>
@@ -145,24 +162,24 @@
 
         <div class="flex items-center gap-2">
           <button
-             type="button"
-             class="pager-btn"
-             [disabled]="(page() > totalPages() ? totalPages() : page()) <= 1"
-             (click)="prevPage()"
-           >
-             Previous
-           </button>
-           <span class="text-slate-500 text-sm dark:text-slate-400">
-             Page {{ page() > totalPages() ? totalPages() : page() }} / {{ totalPages() }}
-           </span>
-           <button
-             type="button"
-             class="pager-btn"
-             [disabled]="(page() > totalPages() ? totalPages() : page()) >= totalPages()"
-             (click)="nextPage()"
-           >
-             Next
-           </button>
+            type="button"
+            class="pager-btn"
+            [disabled]="(page() > totalPages() ? totalPages() : page()) <= 1"
+            (click)="prevPage()"
+          >
+            Previous
+          </button>
+          <span class="text-slate-500 text-sm dark:text-slate-400">
+            Page {{ page() > totalPages() ? totalPages() : page() }} / {{ totalPages() }}
+          </span>
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="(page() > totalPages() ? totalPages() : page()) >= totalPages()"
+            (click)="nextPage()"
+          >
+            Next
+          </button>
         </div>
       </div>
     </section>

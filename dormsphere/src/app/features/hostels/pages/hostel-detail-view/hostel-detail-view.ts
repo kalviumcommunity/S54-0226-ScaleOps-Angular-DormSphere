@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { HostelStoreService } from '../../data/hostel-store.service';
 
@@ -38,7 +38,7 @@ interface ActivityItem {
 
 @Component({
   selector: 'app-hostel-detail-view',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink],
   templateUrl: './hostel-detail-view.html',
   styleUrl: './hostel-detail-view.css',
 })
@@ -47,7 +47,6 @@ export class HostelDetailView {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  sidebarOpen = false;
   readonly loading = this.hostelStore.loading;
   readonly errorMessage = this.hostelStore.errorMessage;
 
@@ -209,14 +208,6 @@ export class HostelDetailView {
         tone: 'warn',
       },
     ];
-  }
-
-  toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
-  }
-
-  closeSidebar(): void {
-    this.sidebarOpen = false;
   }
 
   async deleteCurrentHostel(): Promise<void> {
