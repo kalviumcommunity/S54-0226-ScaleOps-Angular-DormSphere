@@ -1,4 +1,4 @@
-<div class="bg-background-light text-slate-900 font-display relative flex min-h-screen flex-col dark:bg-background-dark dark:text-slate-100">
+<div class="bg-background-light text-slate-900 font-display relative flex min-h-screen flex-col dark:bg-slate-950 dark:text-slate-100">
   <app-hostel-navbar />
 
   <div class="relative flex flex-1">
@@ -21,39 +21,39 @@
     </button>
 
     <aside
-      class="fixed top-[57px] left-0 z-40 h-[calc(100vh-57px)] w-72 border-r border-slate-200 bg-white px-4 py-5 shadow-xl transition-transform duration-200 dark:border-slate-800 dark:bg-slate-900 lg:sticky lg:top-[57px] lg:h-[calc(100vh-57px)] lg:translate-x-0 lg:shadow-none"
+      class="fixed top-[57px] left-0 z-40 h-[calc(100vh-57px)] w-72 border-r border-slate-200 bg-white px-4 py-5 shadow-xl transition-transform duration-200 dark:border-slate-700 dark:bg-slate-900 lg:sticky lg:top-[57px] lg:h-[calc(100vh-57px)] lg:translate-x-0 lg:shadow-none"
       [class.-translate-x-full]="!sidebarOpen()"
       [class.translate-x-0]="sidebarOpen()"
     >
       <div class="mb-4 px-3">
-        <p class="text-slate-400 text-[11px] font-semibold tracking-[0.12em] uppercase dark:text-slate-500">Operations</p>
+        <p class="text-slate-400 text-[11px] font-semibold tracking-[0.12em] uppercase dark:text-slate-300">Operations</p>
       </div>
 
       <nav class="space-y-2">
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary font-semibold" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-100 dark:hover:bg-slate-800" routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary font-semibold" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()">
           <span class="material-symbols-outlined text-base">space_dashboard</span>
           Dashboard
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/hostels" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-100 dark:hover:bg-slate-800" routerLink="/hostels" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined text-base">apartment</span>
           Hostels
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/rooms" routerLinkActive="bg-primary/10 text-primary font-semibold" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-100 dark:hover:bg-slate-800" routerLink="/rooms" routerLinkActive="bg-primary/10 text-primary font-semibold" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()">
           <span class="flex items-center gap-3">
           <span class="material-symbols-outlined text-base">meeting_room</span>
           Rooms
           </span>
           <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold tracking-wide text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">LIVE</span>
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/students" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-100 dark:hover:bg-slate-800" routerLink="/students" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined text-base">school</span>
           Students
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/maintenance" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-100 dark:hover:bg-slate-800" routerLink="/maintenance" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined text-base">construction</span>
           Maintenance
         </a>
-        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-300 dark:hover:bg-slate-800" routerLink="/reports" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
+        <a class="text-slate-600 hover:bg-slate-100 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm dark:text-slate-100 dark:hover:bg-slate-800" routerLink="/reports" routerLinkActive="bg-primary/10 text-primary font-semibold" (click)="closeSidebar()">
           <span class="material-symbols-outlined text-base">monitoring</span>
           Reports
         </a>

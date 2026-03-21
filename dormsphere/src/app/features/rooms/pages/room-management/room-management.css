@@ -66,19 +66,19 @@
 }
 
 .dark .table-head-cell {
-	color: rgb(148 163 184);
+	color: rgb(203 213 225);
 }
 
 .dark .table-action-btn,
 .dark .pager-btn {
-	border-color: rgb(51 65 85);
+	border-color: rgb(71 85 105);
 	background: rgb(15 23 42);
-	color: rgb(203 213 225);
+	color: rgb(226 232 240);
 }
 
 .dark .table-action-btn:hover,
 .dark .pager-btn:hover:not(:disabled) {
-	background: rgb(30 41 59);
+	background: rgb(51 65 85);
 }
 
 @media (max-width: 900px) {

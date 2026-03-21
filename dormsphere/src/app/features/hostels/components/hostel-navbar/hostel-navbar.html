@@ -1,5 +1,5 @@
 <header
-  class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-white px-10 py-3 dark:border-slate-800 dark:bg-slate-900"
+  class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-white px-10 py-3 dark:border-slate-700 dark:bg-slate-950"
 >
   <div class="flex items-center gap-8">
     <div class="text-primary flex items-center gap-3">
@@ -16,32 +16,32 @@
         routerLink="/dashboard"
         routerLinkActive="text-primary border-primary border-b-2 py-1 font-semibold"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
+        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-200 dark:hover:text-primary"
         >Dashboard</a
       >
       <a
         routerLink="/hostels"
         routerLinkActive="text-primary border-primary border-b-2 py-1 font-semibold"
-        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
+        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-200 dark:hover:text-primary"
         >Hostels</a
       >
       <a
         routerLink="/rooms"
         routerLinkActive="text-primary border-primary border-b-2 py-1 font-semibold"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
+        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-200 dark:hover:text-primary"
         >Rooms</a
       >
       <a
         routerLink="/students"
         routerLinkActive="text-primary"
-        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
+        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-200 dark:hover:text-primary"
         >Students</a
       >
       <a
         routerLink="/reports"
         routerLinkActive="text-primary"
-        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-400 dark:hover:text-primary"
+        class="text-slate-600 hover:text-primary text-sm font-medium transition-colors dark:text-slate-200 dark:hover:text-primary"
         >Reports</a
       >
     </div>
@@ -49,7 +49,16 @@
 
   <div class="flex items-center gap-4">
     <button
-      class="flex items-center justify-center rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+      class="flex items-center justify-center rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
+      type="button"
+      [attr.aria-label]="darkModeLabel()"
+      [attr.title]="darkModeLabel()"
+      (click)="toggleTheme()"
+    >
+      <span class="material-symbols-outlined">{{ darkModeIcon() }}</span>
+    </button>
+    <button
+      class="flex items-center justify-center rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800"
       type="button"
     >
       <span class="material-symbols-outlined">notifications</span>

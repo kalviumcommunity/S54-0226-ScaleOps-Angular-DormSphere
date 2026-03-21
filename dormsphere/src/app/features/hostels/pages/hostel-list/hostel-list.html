@@ -4,14 +4,14 @@
 				<h1 class="text-slate-900 text-3xl font-extrabold tracking-tight dark:text-slate-100">
 					Hostel Management
 				</h1>
-				<p class="text-slate-500 text-base dark:text-slate-400">
+				<p class="text-slate-500 text-base dark:text-slate-300">
 					Overview of all campus residential facilities and capacity status.
 				</p>
 			</div>
 
 			<div class="flex items-center gap-3">
 				<button
-					class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+					class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
 					type="button"
 				>
 					<span class="material-symbols-outlined text-lg">download</span>
@@ -33,16 +33,16 @@
 			</div>
 		}
 
-		<div class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+		<div class="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
 			<div class="flex flex-wrap items-center justify-between gap-4">
 				<div class="min-w-72 flex-1">
 					<div class="relative">
 						<span
-							class="material-symbols-outlined absolute top-1/2 left-3 -translate-y-1/2 text-slate-400"
+							class="material-symbols-outlined absolute top-1/2 left-3 -translate-y-1/2 text-slate-400 dark:text-slate-300"
 							>search</span
 						>
 						<input
-							class="focus:ring-primary focus:border-primary w-full rounded-lg border-slate-200 bg-slate-50 py-2.5 pr-4 pl-10 text-sm dark:border-slate-700 dark:bg-slate-800"
+							class="focus:ring-primary focus:border-primary w-full rounded-lg border-slate-200 bg-slate-50 py-2.5 pr-4 pl-10 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400"
 							aria-label="Search hostels"
 							placeholder="Search by name, location, or warden..."
 							type="text"
@@ -54,7 +54,7 @@
 
 				<div class="flex flex-wrap gap-2">
 					<label
-						class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2 text-sm font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+						class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
 					>
 						<span class="material-symbols-outlined text-lg">filter_alt</span>
 						Type:
@@ -72,7 +72,7 @@
 					</label>
 
 					<label
-						class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2 text-sm font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+						class="text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-slate-50 px-3 py-2 text-sm font-medium dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
 					>
 						<span class="material-symbols-outlined text-lg">signal_cellular_alt</span>
 						Status:
@@ -101,45 +101,45 @@
 			</div>
 		</div>
 
-		<div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+		<div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-700 dark:bg-slate-900">
 			@if (loading()) {
-				<div class="border-b border-slate-200 px-6 py-4 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
+				<div class="border-b border-slate-200 px-6 py-4 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-300">
 					Loading hostels from backend...
 				</div>
 			}
 			<div class="overflow-x-auto">
 				<table class="w-full border-collapse text-left">
 					<thead>
-						<tr class="border-slate-200 bg-slate-50 border-b dark:border-slate-800 dark:bg-slate-800/50">
-							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-400">
+						<tr class="border-slate-200 bg-slate-50 border-b dark:border-slate-700 dark:bg-slate-900">
+							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-300">
 								Hostel Name
 							</th>
-							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-400">
+							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-300">
 								Location
 							</th>
-							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-400">
+							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-300">
 								Capacity Status
 							</th>
-							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-400">
+							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-300">
 								Type
 							</th>
-							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-400">
+							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-300">
 								Warden Info
 							</th>
-							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-400">
+							<th class="text-slate-500 px-6 py-4 text-xs font-bold tracking-wider uppercase dark:text-slate-300">
 								Status
 							</th>
 							<th
-								class="text-slate-500 px-6 py-4 text-right text-xs font-bold tracking-wider uppercase dark:text-slate-400"
+								class="text-slate-500 px-6 py-4 text-right text-xs font-bold tracking-wider uppercase dark:text-slate-300"
 							>
 								Actions
 							</th>
 						</tr>
 					</thead>
 
-					<tbody class="divide-slate-100 dark:divide-slate-800 divide-y">
+					<tbody class="divide-slate-100 dark:divide-slate-700 divide-y">
 						@for (hostel of filteredHostels(); track hostel.id) {
-							<tr class="hover:bg-slate-50/50 transition-colors dark:hover:bg-slate-800/30">
+							<tr class="hover:bg-slate-50/50 transition-colors dark:hover:bg-slate-800/50">
 								<td class="px-6 py-4">
 									<div class="flex flex-col">
 										<a
@@ -151,7 +151,7 @@
 										<span class="text-slate-400 text-xs">ID: {{ hostel.id }}</span>
 									</div>
 								</td>
-								<td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-400">{{ hostel.location }}</td>
+								<td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-300">{{ hostel.location }}</td>
 								<td class="px-6 py-4">
 									<div class="min-w-30 flex flex-col gap-1.5">
 										<div class="flex justify-between text-xs font-medium">
@@ -174,13 +174,13 @@
 								<td class="px-6 py-4">
 									<div class="flex items-center gap-3">
 										<div
-											class="text-slate-500 bg-slate-100 dark:bg-slate-800 size-8 flex items-center justify-center rounded-full"
+											class="text-slate-500 bg-slate-100 dark:bg-slate-800 dark:text-slate-300 size-8 flex items-center justify-center rounded-full"
 										>
 											<span class="material-symbols-outlined text-base">person</span>
 										</div>
 										<div class="flex flex-col">
 											<span class="text-sm font-medium">{{ hostel.wardenName }}</span>
-											<span class="text-slate-400 text-xs">Ext: {{ hostel.wardenExtension }}</span>
+											<span class="text-slate-400 text-xs dark:text-slate-300">Ext: {{ hostel.wardenExtension }}</span>
 										</div>
 									</div>
 								</td>
@@ -228,12 +228,12 @@
 			</div>
 
 			<div
-				class="border-slate-200 bg-slate-50/50 flex items-center justify-between border-t px-6 py-4 dark:border-slate-800 dark:bg-slate-800/30"
+				class="border-slate-200 bg-slate-50/50 flex items-center justify-between border-t px-6 py-4 dark:border-slate-700 dark:bg-slate-900/80"
 			>
-				<span class="text-slate-500 text-sm">Showing {{ filteredHostels().length }} of {{ hostels().length }} hostels</span>
+				<span class="text-slate-500 text-sm dark:text-slate-300">Showing {{ filteredHostels().length }} of {{ hostels().length }} hostels</span>
 				<div class="flex gap-2">
 					<button
-						class="text-slate-400 border-slate-200 cursor-not-allowed rounded border bg-white px-3 py-1 text-sm dark:border-slate-700 dark:bg-slate-800"
+						class="text-slate-400 border-slate-200 cursor-not-allowed rounded border bg-white px-3 py-1 text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-500"
 						disabled
 						type="button"
 					>
@@ -246,19 +246,19 @@
 						1
 					</button>
 					<button
-						class="border-slate-200 rounded border bg-white px-3 py-1 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+						class="border-slate-200 rounded border bg-white px-3 py-1 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
 						type="button"
 					>
 						2
 					</button>
 					<button
-						class="border-slate-200 rounded border bg-white px-3 py-1 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+						class="border-slate-200 rounded border bg-white px-3 py-1 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
 						type="button"
 					>
 						3
 					</button>
 					<button
-						class="border-slate-200 rounded border bg-white px-3 py-1 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800"
+						class="border-slate-200 rounded border bg-white px-3 py-1 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
 						type="button"
 					>
 						Next
@@ -268,22 +268,22 @@
 		</div>
 
 		<div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-4">
-			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
 				<p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase">Total Capacity</p>
 				<p class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ totals().totalCapacity }}</p>
 			</div>
-			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
 				<p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase">Occupancy Rate</p>
 				<div class="flex items-baseline gap-2">
 					<p class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ totals().occupancyRate.toFixed(1) }}%</p>
 					<span class="text-emerald-500 text-xs font-bold">↑ 2.4%</span>
 				</div>
 			</div>
-			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
 				<p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase">Available Beds</p>
 				<p class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ totals().availableBeds }}</p>
 			</div>
-			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+			<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
 				<p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase">Total Hostels</p>
 				<p class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ filteredHostels().length }}</p>
 			</div>
