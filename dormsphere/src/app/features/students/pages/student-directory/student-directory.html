@@ -85,7 +85,7 @@
 
         <div class="flex flex-wrap items-center gap-2">
           <select
-            class="focus:ring-primary rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100"
+            class="cursor-pointer focus:ring-primary rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 transition-all hover:shadow-sm"
             [value]="selectedDepartment()"
             (change)="setDepartment($any($event.target).value)"
             aria-label="Filter by department"
@@ -99,7 +99,7 @@
           @for (status of ['ALL', 'ACTIVE', 'PENDING', 'GRADUATED']; track status) {
             <button
               type="button"
-              class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold tracking-wide text-slate-600 uppercase transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              class="cursor-pointer rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold tracking-wide text-slate-600 uppercase transition-all hover:bg-slate-50 hover:shadow-sm hover:transform hover:translate-y-[-1px] dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               [class.bg-blue-500]="statusFilter() === status"
               [class.text-white]="statusFilter() === status"
               (click)="setStatusFilter($any(status))"
@@ -110,7 +110,7 @@
 
           <button
             type="button"
-            class="text-primary hover:bg-primary/5 rounded-lg px-3 py-2 text-sm font-semibold"
+            class="cursor-pointer text-primary hover:bg-primary/5 rounded-lg px-3 py-2 text-sm font-semibold transition-all hover:transform hover:translate-y-[-1px]"
             (click)="resetFilters()"
           >
             Reset
@@ -154,7 +154,7 @@
               }
             } @else {
               @for (student of pagedStudents(); track student.id) {
-                <tr class="hover:bg-slate-50/50 transition-colors dark:hover:bg-slate-800/50">
+                <tr class="student-row cursor-pointer hover:bg-slate-100/60 dark:hover:bg-slate-700/60 transition-all duration-200" (click)="viewStudent(student.id)">
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
                       <img [src]="student.avatarUrl" class="h-9 w-9 rounded-full object-cover" alt="{{ student.name }} avatar" />
@@ -182,8 +182,12 @@
                       {{ student.status }}
                     </span>
                   </td>
-                  <td class="px-6 py-4 text-right">
+                  <td class="px-6 py-4 text-right" (click)="$event.stopPropagation()">
                     <div class="flex justify-end gap-2">
+                      <button type="button" class="table-action-btn" (click)="viewStudent(student.id)" title="View student profile">
+                        <span class="material-symbols-outlined text-xs align-middle">visibility</span>
+                        View
+                      </button>
                       <button type="button" class="table-action-btn" (click)="editStudent(student.id)">
                         Edit
                       </button>

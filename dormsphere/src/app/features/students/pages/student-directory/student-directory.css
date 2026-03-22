@@ -1,100 +1,157 @@
 .table-head-cell {
-	padding: 1rem 1.5rem;
-	font-size: 0.75rem;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: rgb(100 116 139);
+  padding: 1rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
 }
 
 .department-chip {
-	display: inline-flex;
-	align-items: center;
-	border-radius: 999px;
-	background: color-mix(in srgb, var(--color-primary) 16%, transparent);
-	color: #0b5f45;
-	padding: 0.32rem 0.68rem;
-	font-size: 0.74rem;
-	font-weight: 700;
-	letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary) 16%, transparent);
+  color: #0b5f45;
+  padding: 0.32rem 0.68rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.department-chip:hover {
+  background: color-mix(in srgb, var(--color-primary) 24%, transparent);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.student-row {
+  transition: all 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.student-row:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.student-row:active {
+  transform: scale(0.995) translateY(0);
 }
 
 .table-action-btn {
-	border: 1px solid #d7e1ed;
-	border-radius: 0.55rem;
-	padding: 0.32rem 0.55rem;
-	background: color-mix(in srgb, #ffffff 96%, transparent);
-	color: rgb(51 65 85);
-	font-size: 0.72rem;
-	font-weight: 600;
-	transition:
-		transform 0.16s ease,
-		background-color 0.16s ease;
+  border: 1px solid #d7e1ed;
+  border-radius: 0.55rem;
+  padding: 0.32rem 0.55rem;
+  background: color-mix(in srgb, #ffffff 96%, transparent);
+  color: rgb(51 65 85);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition:
+    transform 0.16s ease,
+    background-color 0.16s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .table-action-btn:hover {
-	transform: translateY(-1px);
-	background: rgb(248 250 252);
+  transform: translateY(-1px);
+  background: rgb(248 250 252);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .table-action-btn:active {
-	transform: scale(0.99);
+  transform: scale(0.99);
 }
 
 .pager-btn {
-	border: 1px solid #d7e1ed;
-	border-radius: 0.55rem;
-	background: white;
-	padding: 0.4rem 0.72rem;
-	font-size: 0.79rem;
-	font-weight: 600;
-	transition: background-color 0.16s ease;
+  border: 1px solid #d7e1ed;
+  border-radius: 0.55rem;
+  background: white;
+  padding: 0.4rem 0.72rem;
+  font-size: 0.79rem;
+  font-weight: 600;
+  transition: all 0.16s ease;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .pager-btn:hover:not(:disabled) {
-	background: rgb(248 250 252);
+  background: rgb(248 250 252);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.pager-btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .pager-btn:disabled {
-	opacity: 0.45;
-	cursor: not-allowed;
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .status-pill {
-	background: rgba(100, 116, 139, 0.18);
-	color: rgb(71, 85, 105);
+  background: rgba(100, 116, 139, 0.18);
+  color: rgb(71, 85, 105);
+  cursor: default;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .dark .table-head-cell {
-	color: rgb(148 163 184);
+  color: rgb(148 163 184);
 }
 
 .dark .department-chip {
-	color: rgb(110 231 183);
+  color: rgb(110 231 183);
 }
 
 .dark .table-action-btn,
 .dark .pager-btn {
-	border-color: rgb(51 65 85);
-	background: rgb(15 23 42);
-	color: rgb(203 213 225);
+  border-color: rgb(51 65 85);
+  background: rgb(15 23 42);
+  color: rgb(203 213 225);
 }
 
 .dark .table-action-btn:hover,
 .dark .pager-btn:hover:not(:disabled) {
-	background: rgb(30 41 59);
+  background: rgb(30 41 59);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 900px) {
-	.table-action-btn {
-		padding: 0.34rem 0.48rem;
-		font-size: 0.68rem;
-	}
+  .table-action-btn {
+    padding: 0.34rem 0.48rem;
+    font-size: 0.68rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.table-action-btn,
-	.pager-btn {
-		transition: none;
-	}
+  .table-action-btn,
+  .pager-btn,
+  .student-row,
+  .department-chip {
+    transition: none;
+  }
+
+  .table-action-btn:hover,
+  .student-row:hover,
+  .pager-btn:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .student-row:active,
+  .table-action-btn:active,
+  .pager-btn:active:not(:disabled) {
+    transform: none;
+  }
 }

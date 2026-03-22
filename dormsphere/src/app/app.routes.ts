@@ -10,6 +10,7 @@ import { RoomManagement } from './features/rooms/pages/room-management/room-mana
 import { RoomFormPage } from './features/rooms/pages/room-form-page/room-form-page';
 import { StudentDirectory } from './features/students/pages/student-directory/student-directory';
 import { StudentFormPage } from './features/students/pages/student-form-page/student-form-page';
+import { StudentProfile } from './features/students/pages/student-profile/student-profile';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -28,6 +29,7 @@ export const routes: Routes = [
       { path: 'rooms/:id/edit', component: RoomFormPage },
       { path: 'students', component: StudentDirectory },
       { path: 'students/new', component: StudentFormPage },
+      { path: 'students/:id', component: StudentProfile },
       { path: 'students/:id/edit', component: StudentFormPage },
       { path: 'maintenance', component: NavigationPlaceholder },
       { path: 'reports', component: NavigationPlaceholder },
