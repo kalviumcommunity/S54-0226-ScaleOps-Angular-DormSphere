@@ -1,5 +1,4 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { Router } from '@angular/router';
 import { RoomStoreService } from '../../data/room-store.service';
 import { Room, RoomStatus } from '../../data/room.model';
@@ -16,7 +15,7 @@ function isRoomFilter(value: string): value is RoomFilter {
 
 @Component({
   selector: 'app-room-management',
-  imports: [NgClass, RoomStatusBadge, RoomStatsGrid],
+  imports: [RoomStatusBadge, RoomStatsGrid],
   templateUrl: './room-management.html',
   styleUrl: './room-management.css',
 })

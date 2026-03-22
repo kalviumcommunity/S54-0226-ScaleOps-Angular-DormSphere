@@ -112,6 +112,10 @@ export class StudentDirectory {
     this.router.navigate(['/students/new']);
   }
 
+  viewStudent(id: string): void {
+    this.router.navigate(['/students', id]);
+  }
+
   editStudent(id: string): void {
     this.router.navigate(['/students', id, 'edit']);
   }
