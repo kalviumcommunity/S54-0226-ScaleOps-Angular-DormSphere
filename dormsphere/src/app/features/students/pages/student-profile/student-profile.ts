@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
@@ -25,9 +25,7 @@ export class StudentProfile {
     { initialValue: null }
   );
 
-  get student() {
-    return this.studentStore.getStudentById(this.studentId());
-  }
+  readonly student = computed(() => this.studentStore.getStudentById(this.studentId()));
 
   editStudent(): void {
     if (this.studentId()) {

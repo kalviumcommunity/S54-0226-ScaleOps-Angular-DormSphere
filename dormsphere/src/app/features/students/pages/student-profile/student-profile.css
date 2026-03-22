@@ -31,7 +31,7 @@ button[type='button'].interactive {
 
 /* PRIMARY ACTION BUTTON */
 .bg-primary.interactive {
-  background: linear-gradient(135deg, #059467 0%, #047857 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 82%, black) 100%);
 }
 
 .bg-primary.interactive:hover {
@@ -50,7 +50,7 @@ button[type='button'].interactive {
 
 /* DARK MODE - PRIMARY BUTTON */
 .dark .bg-primary.interactive {
-  background: linear-gradient(135deg, #059467 0%, #0a7c59 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 74%, black) 100%);
 }
 
 /* ICON RIPPLE EFFECT */
