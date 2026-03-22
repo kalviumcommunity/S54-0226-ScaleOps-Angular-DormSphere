@@ -154,7 +154,14 @@
               }
             } @else {
               @for (student of pagedStudents(); track student.id) {
-                <tr class="student-row cursor-pointer hover:bg-slate-100/60 dark:hover:bg-slate-700/60 transition-all duration-200" (click)="viewStudent(student.id)">
+                <tr
+                  class="student-row cursor-pointer hover:bg-slate-100/60 dark:hover:bg-slate-700/60 transition-all duration-200"
+                  role="button"
+                  tabindex="0"
+                  (click)="viewStudent(student.id)"
+                  (keydown.enter)="viewStudent(student.id)"
+                  (keydown.space)="viewStudent(student.id); $event.preventDefault()"
+                >
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
                       <img [src]="student.avatarUrl" class="h-9 w-9 rounded-full object-cover" alt="{{ student.name }} avatar" />

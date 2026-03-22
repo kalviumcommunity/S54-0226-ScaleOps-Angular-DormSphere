@@ -34,8 +34,8 @@ export class StudentProfile {
   }
 
   messageStudent(): void {
-    // Toast notification or modal could be shown here
-    console.log('Message student:', this.studentId());
+    // User-facing placeholder until messaging is implemented
+    window.alert(`Messaging student (ID: ${this.studentId()}) is not implemented yet.`);
   }
 
   goBack(): void {
