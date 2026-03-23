@@ -21,9 +21,16 @@ async fn main() {
         env::var("DATABASE_URL").expect("DATABASE_URL must be set before starting the server");
 
     // Create DB connection pool
-    let pool: PgPool = db::connection::create_pool(&database_url)
-        .await
-        .expect("Failed to connect to database");
+    let pool: PgPool = match db::connection::create_pool(&database_url).await {
+        Ok(pool) => {
+            println!("✅ Database connected successfully");
+            pool
+        }
+        Err(err) => {
+            eprintln!("❌ Database connection failed: {:?}", err);
+            std::process::exit(1);
+        }
+    };
 
     println!("Database connected successfully");
 
