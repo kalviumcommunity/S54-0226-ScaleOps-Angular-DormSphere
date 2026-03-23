@@ -9,6 +9,7 @@ pub mod hostels;
 pub mod auth;
 pub mod rooms;
 pub mod students;
+pub mod maintenance;
 
 async fn preflight() -> StatusCode {
     StatusCode::NO_CONTENT
@@ -73,6 +74,13 @@ pub fn create_routes(pool: PgPool) -> Router {
         .route("/api/students/:id", put(students::update_student))
         .route("/api/students/:id", delete(students::delete_student))
         .route("/api/students/:id", options(preflight))
+        .route("/api/maintenance", get(maintenance::list_requests))
+        .route("/api/maintenance", post(maintenance::create_request))
+        .route("/api/maintenance", options(preflight))
+        .route("/api/maintenance/:id", get(maintenance::get_request))
+        .route("/api/maintenance/:id", put(maintenance::update_request))
+        .route("/api/maintenance/:id", delete(maintenance::delete_request))
+        .route("/api/maintenance/:id", options(preflight))
         .layer(cors)
         .with_state(pool)
 }

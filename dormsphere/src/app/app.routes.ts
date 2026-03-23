@@ -11,6 +11,7 @@ import { RoomFormPage } from './features/rooms/pages/room-form-page/room-form-pa
 import { StudentDirectory } from './features/students/pages/student-directory/student-directory';
 import { StudentFormPage } from './features/students/pages/student-form-page/student-form-page';
 import { StudentProfile } from './features/students/pages/student-profile/student-profile';
+import { Maintenance } from './features/maintenance/pages/maintenance/maintenance';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -31,7 +32,7 @@ export const routes: Routes = [
       { path: 'students/new', component: StudentFormPage },
       { path: 'students/:id', component: StudentProfile },
       { path: 'students/:id/edit', component: StudentFormPage },
-      { path: 'maintenance', component: NavigationPlaceholder },
+      { path: 'maintenance', component: Maintenance },
       { path: 'reports', component: NavigationPlaceholder },
     ],
   },

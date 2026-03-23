@@ -3,12 +3,8 @@ FROM rust:1.88-slim AS builder
 
 WORKDIR /app
 
-# Cache dependencies
+# Copy sources and build the actual backend binary.
 COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo "fn main() {}" > src/main.rs
-RUN cargo build --release
-
-# Copy actual source
 COPY src ./src
 RUN cargo build --release
 
