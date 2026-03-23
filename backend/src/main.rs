@@ -17,10 +17,12 @@ async fn main() {
         .expect("PORT must be a number");
 
     let address = format!("0.0.0.0:{}", port);
-    let database_url =
-        env::var("DATABASE_URL").expect("DATABASE_URL must be set before starting the server");
+    println!("🚀 App starting...");
 
-    // Create DB connection pool
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
+    println!("DATABASE_URL loaded");
+
     let pool: PgPool = match db::connection::create_pool(&database_url).await {
         Ok(pool) => {
             println!("✅ Database connected successfully");
