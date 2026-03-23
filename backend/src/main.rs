@@ -1,20 +1,24 @@
-use tokio::net::TcpListener;
-use std::env;
 use dotenv::dotenv;
 use sqlx::PgPool;
+use std::env;
+use tokio::net::TcpListener;
 
 mod db;
-mod routes;
 mod models;
+mod routes;
 
 #[tokio::main]
 async fn main() {
     dotenv().ok();
 
-    let port = env::var("PORT").unwrap_or("8000".to_string());
+    let port: u16 = env::var("PORT")
+        .unwrap_or_else(|_| "8000".to_string())
+        .parse()
+        .expect("PORT must be a number");
+
     let address = format!("0.0.0.0:{}", port);
-    let database_url = env::var("DATABASE_URL")
-    .expect("DATABASE_URL must be set before starting the server");
+    let database_url =
+        env::var("DATABASE_URL").expect("DATABASE_URL must be set before starting the server");
 
     // Create DB connection pool
     let pool: PgPool = db::connection::create_pool(&database_url)
@@ -26,9 +30,7 @@ async fn main() {
     // Create routes
     let app = routes::create_routes(pool);
 
-    let listener = TcpListener::bind(&address)
-        .await
-        .unwrap();
+    let listener = TcpListener::bind(&address).await.unwrap();
 
     println!("Server running on http://{}", address);
 
