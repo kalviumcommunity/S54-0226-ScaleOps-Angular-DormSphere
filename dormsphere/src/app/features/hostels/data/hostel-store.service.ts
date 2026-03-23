@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ApiHostel, Hostel, HostelStatus, HostelType, NewHostelInput } from './hostel.model';
+import { environment } from '../../../../environments/environment';
 
 interface HostelMetadata {
   type: HostelType;
@@ -18,7 +19,7 @@ interface HostelCreateOrUpdatePayload {
   total_capacity: number;
 }
 
-const HOSTELS_API_BASE_URL = '/api/hostels';
+const HOSTELS_API_BASE_URL = `${environment.apiUrl}/api/hostels`;
 const HOSTEL_META_STORAGE_KEY = 'dormsphere.hostel-metadata';
 
 @Injectable({ providedIn: 'root' })

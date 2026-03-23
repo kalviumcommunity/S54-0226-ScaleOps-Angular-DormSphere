@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { finalize, switchMap, timer } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { finalize, switchMap, timer } from 'rxjs';
 })
 
 export class Login {
-  private static readonly API_LOGIN_PATH = '/api/login';
+  private static readonly API_LOGIN_PATH = `${environment.apiUrl}/api/login`;
 
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);

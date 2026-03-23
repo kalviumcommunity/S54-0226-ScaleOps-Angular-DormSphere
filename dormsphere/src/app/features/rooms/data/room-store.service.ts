@@ -4,8 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { HostelStoreService } from '../../hostels/data/hostel-store.service';
 import { ApiRoom, NewRoomInput, Room, RoomStats, RoomStatus, RoomType } from './room.model';
+import { environment } from '../../../../environments/environment';
 
-const ROOMS_API_BASE_URL = '/api/rooms';
+const ROOMS_API_BASE_URL = `${environment.apiUrl}/api/rooms`;
 
 interface RoomCreateOrUpdatePayload {
   hostel_id: number;

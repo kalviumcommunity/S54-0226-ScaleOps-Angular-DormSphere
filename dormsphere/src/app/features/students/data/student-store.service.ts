@@ -3,8 +3,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ApiStudent, NewStudentInput, Student, StudentStats, StudentStatus } from './student.model';
+import { environment } from '../../../../environments/environment';
 
-const STUDENTS_API_BASE_URL = '/api/students';
+const STUDENTS_API_BASE_URL = `${environment.apiUrl}/api/students`;
 const DEFAULT_AVATAR_URL = 'https://i.pravatar.cc/64?img=12';
 
 interface StudentCreatePayload {
