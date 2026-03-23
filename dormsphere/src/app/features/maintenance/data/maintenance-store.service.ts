@@ -2,6 +2,7 @@ import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import {
   ApiMaintenanceRequest,
   MaintenanceRequest,
@@ -10,7 +11,7 @@ import {
   NewMaintenanceRequestInput,
 } from './maintenance.model';
 
-const MAINTENANCE_API_BASE_URL = '/api/maintenance';
+const MAINTENANCE_API_BASE_URL = `${environment.apiUrl}/api/maintenance`;
 
 interface MaintenancePayload {
   room_id: number | null;
