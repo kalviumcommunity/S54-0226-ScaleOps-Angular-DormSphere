@@ -1,0 +1,288 @@
+<main class="px-6 py-8">
+  <div class="mx-auto w-full max-w-7xl">
+    <section class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div class="flex flex-col gap-1">
+        <h1 class="text-slate-900 text-3xl font-extrabold tracking-tight dark:text-slate-100">
+          Maintenance Requests
+        </h1>
+        <p class="text-slate-500 text-base dark:text-slate-400">
+          Track, prioritize, and resolve operational tickets across hostels and rooms.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          class="interactive text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+          (click)="refresh()"
+        >
+          <span class="material-symbols-outlined text-lg">sync</span>
+          Refresh
+        </button>
+
+        <button
+          type="button"
+          class="interactive bg-primary flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-bold text-white shadow-lg transition-opacity hover:opacity-90"
+          (click)="startCreate()"
+        >
+          <span class="material-symbols-outlined text-lg">add</span>
+          New Request
+        </button>
+      </div>
+    </section>
+
+    <section class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+      @if (loading()) {
+        @for (item of [1, 2, 3, 4]; track item) {
+          <article class="panel-surface p-4">
+            <div class="skeleton-line mb-3 h-3 w-24 rounded"></div>
+            <div class="skeleton-line mb-2 h-7 w-16 rounded"></div>
+            <div class="skeleton-line h-3 w-28 rounded"></div>
+          </article>
+        }
+      } @else {
+        <article class="panel-surface p-4">
+          <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">Total Requests</p>
+          <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats().total }}</h2>
+          <p class="text-slate-400 mt-2 text-xs">All registered tickets</p>
+        </article>
+
+        <article class="panel-surface p-4">
+          <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">Open</p>
+          <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats().open }}</h2>
+          <p class="text-slate-400 mt-2 text-xs">Awaiting operations action</p>
+        </article>
+
+        <article class="panel-surface p-4">
+          <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">In Progress</p>
+          <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats().inProgress }}</h2>
+          <p class="text-slate-400 mt-2 text-xs">Currently being handled</p>
+        </article>
+
+        <article class="panel-surface p-4">
+          <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-400">Resolved</p>
+          <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ stats().resolved }}</h2>
+          <p class="text-slate-400 mt-2 text-xs">Closed maintenance tasks</p>
+        </article>
+      }
+    </section>
+
+    <section class="panel-surface mb-6 p-5">
+      <div class="mb-5 flex items-center justify-between gap-4">
+        <h2 class="text-slate-900 text-lg font-bold dark:text-slate-100">
+          {{ editingId() ? 'Edit Request' : 'Create Request' }}
+        </h2>
+      </div>
+
+      <form class="grid grid-cols-1 gap-4 md:grid-cols-3" [formGroup]="form" (ngSubmit)="submit()">
+        <label class="flex flex-col gap-2 text-sm font-semibold">
+          Room (optional)
+          <select
+            formControlName="roomId"
+            class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          >
+            <option value="">Common Area / Unassigned</option>
+            @for (room of rooms(); track room.id) {
+              <option [value]="room.id">{{ room.hostelName }} - Room {{ room.number }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="flex flex-col gap-2 text-sm font-semibold">
+          Status
+          <select
+            formControlName="status"
+            class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+          >
+            @for (status of ['OPEN', 'IN_PROGRESS', 'RESOLVED']; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </label>
+
+        <div class="flex items-end gap-2">
+          <button
+            type="submit"
+            class="interactive bg-primary rounded-lg px-4 py-2.5 text-sm font-bold text-white shadow-lg"
+            [disabled]="saving()"
+          >
+            {{ editingId() ? 'Update' : 'Create' }}
+          </button>
+
+          @if (editingId()) {
+            <button
+              type="button"
+              class="interactive rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              (click)="startCreate()"
+            >
+              Cancel Edit
+            </button>
+          }
+        </div>
+
+        <label class="md:col-span-3 flex flex-col gap-2 text-sm font-semibold">
+          Description
+          <textarea
+            formControlName="description"
+            rows="3"
+            class="focus:ring-primary rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 focus:outline-none focus:ring-2"
+            placeholder="Describe the maintenance issue..."
+          ></textarea>
+        </label>
+      </form>
+    </section>
+
+    <section class="panel-surface mb-6 p-4">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <label class="relative min-w-72 flex-1">
+          <span
+            class="material-symbols-outlined absolute top-1/2 left-3 -translate-y-1/2 text-slate-400"
+            >search</span>
+          <input
+            type="text"
+            aria-label="Search requests"
+            placeholder="Search description, room, hostel, or status"
+            class="focus:ring-primary focus:border-primary w-full rounded-lg border-slate-200 bg-slate-50 py-2.5 pr-4 pl-10 text-sm dark:border-slate-700 dark:bg-slate-800"
+            [value]="searchQuery()"
+            (input)="setSearchQuery($any($event.target).value)"
+          />
+        </label>
+
+        <div class="flex flex-wrap items-center gap-2">
+          @for (status of ['ALL', 'OPEN', 'IN_PROGRESS', 'RESOLVED']; track status) {
+            <button
+              type="button"
+              class="rounded-lg border px-3 py-2 text-xs font-semibold tracking-wide uppercase transition-colors"
+              [ngClass]="
+                statusFilter() === status
+                  ? 'bg-primary border-primary text-white'
+                  : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
+              "
+              (click)="setStatusFilter($any(status))"
+            >
+              {{ status }}
+            </button>
+          }
+
+          <button
+            type="button"
+            class="text-primary hover:bg-primary/5 rounded-lg px-3 py-2 text-sm font-semibold"
+            (click)="resetFilters()"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+    </section>
+
+    @if (errorMessage(); as error) {
+      <div
+        class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300"
+      >
+        {{ error }}
+      </div>
+    }
+
+    <section class="panel-surface overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr
+              class="border-slate-200 bg-slate-50 border-b dark:border-slate-800 dark:bg-slate-800/50"
+            >
+              <th class="table-head-cell">Ticket</th>
+              <th class="table-head-cell">Location</th>
+              <th class="table-head-cell">Status</th>
+              <th class="table-head-cell">Created</th>
+              <th class="table-head-cell text-right">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-slate-100 dark:divide-slate-800 divide-y">
+            @if (loading()) {
+              @for (item of [1, 2, 3, 4, 5]; track item) {
+                <tr>
+                  <td class="px-6 py-4" colspan="5">
+                    <div class="skeleton-line h-8 w-full rounded"></div>
+                  </td>
+                </tr>
+              }
+            } @else {
+              @for (request of pagedRequests(); track request.id) {
+                <tr class="hover:bg-slate-50/50 transition-colors dark:hover:bg-slate-800/30">
+                  <td class="px-6 py-4">
+                    <p class="text-sm font-semibold">#MT-{{ request.id }}</p>
+                    <p class="text-slate-500 text-xs dark:text-slate-400">
+                      {{ request.description }}
+                    </p>
+                  </td>
+                  <td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-400">
+                    {{ requestLocation(request) }}
+                  </td>
+                  <td class="px-6 py-4">
+                    <span [class]="statusClass(request.status)">
+                      <span class="status-pill__dot"></span>
+                      {{ request.status }}
+                    </span>
+                  </td>
+                  <td class="text-slate-600 px-6 py-4 text-sm dark:text-slate-400">
+                    {{ request.createdAt | date: 'medium' }}
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex justify-end gap-2">
+                      <button type="button" class="table-action-btn" (click)="startEdit(request)">
+                        Edit
+                      </button>
+                      <button type="button" class="table-action-btn" (click)="deleteRequest(request.id)">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+
+              @if (pagedRequests().length === 0) {
+                <tr>
+                  <td
+                    class="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400"
+                    colspan="5"
+                  >
+                    No maintenance requests match the selected criteria.
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div
+        class="border-slate-200 bg-slate-50/50 flex items-center justify-between border-t px-6 py-4 dark:border-slate-800 dark:bg-slate-800/30"
+      >
+        <span class="text-slate-500 text-sm">{{ pageSummary() }}</span>
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="(page() > totalPages() ? totalPages() : page()) <= 1"
+            (click)="prevPage()"
+          >
+            Previous
+          </button>
+          <span class="text-slate-500 text-sm dark:text-slate-400">
+            Page {{ page() > totalPages() ? totalPages() : page() }} / {{ totalPages() }}
+          </span>
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="(page() > totalPages() ? totalPages() : page()) >= totalPages()"
+            (click)="nextPage()"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>

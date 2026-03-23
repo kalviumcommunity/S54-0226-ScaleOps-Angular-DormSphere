@@ -1,0 +1,79 @@
+.table-head-cell {
+  padding: 1rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
+}
+
+.table-action-btn {
+  border: 1px solid #d7e1ed;
+  border-radius: 0.55rem;
+  padding: 0.32rem 0.55rem;
+  background: color-mix(in srgb, #ffffff 96%, transparent);
+  color: rgb(51 65 85);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition:
+    transform 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.table-action-btn:hover {
+  transform: translateY(-1px);
+  background: rgb(248 250 252);
+}
+
+.table-action-btn:active {
+  transform: scale(0.99);
+}
+
+.pager-btn {
+  border: 1px solid #d7e1ed;
+  border-radius: 0.55rem;
+  background: white;
+  padding: 0.4rem 0.72rem;
+  font-size: 0.79rem;
+  font-weight: 600;
+  transition: background-color 0.16s ease;
+}
+
+.pager-btn:hover:not(:disabled) {
+  background: rgb(248 250 252);
+}
+
+.pager-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dark .table-head-cell {
+  color: rgb(148 163 184);
+}
+
+.dark .table-action-btn,
+.dark .pager-btn {
+  border-color: rgb(51 65 85);
+  background: rgb(15 23 42);
+  color: rgb(203 213 225);
+}
+
+.dark .table-action-btn:hover,
+.dark .pager-btn:hover:not(:disabled) {
+  background: rgb(30 41 59);
+}
+
+@media (max-width: 900px) {
+  .table-action-btn {
+    padding: 0.34rem 0.48rem;
+    font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .table-action-btn,
+  .pager-btn {
+    transition: none;
+  }
+}
