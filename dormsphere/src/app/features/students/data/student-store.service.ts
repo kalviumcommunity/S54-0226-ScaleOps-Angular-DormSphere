@@ -139,7 +139,7 @@ export class StudentStoreService {
 
     try {
       const payload = {
-        room_id: roomId ? Number(roomId) : null,
+        room_id: this.toNullableNumber(roomId),
       };
 
       const updated = await firstValueFrom(

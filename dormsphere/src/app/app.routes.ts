@@ -33,8 +33,7 @@ export const routes: Routes = [
       { path: 'students/:id', component: StudentProfile },
       { path: 'students/:id/edit', component: StudentFormPage },
       { path: 'maintenance', component: Maintenance },
-      { path: 'room-allocation', component: RoomAllocation },
-      { path: 'reports', redirectTo: 'room-allocation', pathMatch: 'full' },
+      { path: 'room-allocation', component: RoomAllocation }
     ],
   },
   { path: '**', redirectTo: 'login' },

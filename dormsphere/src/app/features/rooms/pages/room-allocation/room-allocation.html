@@ -85,7 +85,7 @@
       <article class="panel-surface p-5">
         <h2 class="text-slate-900 mb-4 text-lg font-bold dark:text-slate-100">Unassigned Students</h2>
 
-        <div class="max-h-130 space-y-2 overflow-auto pr-1">
+        <div class="allocation-scroll-list space-y-2 overflow-auto pr-1">
           @if (studentsLoading()) {
             @for (item of [1, 2, 3, 4, 5]; track item) {
               <div class="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
@@ -119,7 +119,7 @@
       <article class="panel-surface p-5">
         <h2 class="text-slate-900 mb-4 text-lg font-bold dark:text-slate-100">Rooms</h2>
 
-        <div class="max-h-130 space-y-2 overflow-auto pr-1">
+        <div class="allocation-scroll-list space-y-2 overflow-auto pr-1">
           @if (roomsLoading()) {
             @for (item of [1, 2, 3, 4, 5]; track item) {
               <div class="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
