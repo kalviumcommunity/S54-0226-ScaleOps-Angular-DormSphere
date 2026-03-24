@@ -1,11 +1,12 @@
 use axum::{
     extract::{Path, State},
     http::StatusCode,
-    response::IntoResponse,
+    response::{IntoResponse, Response},
     Json,
 };
 use serde::Serialize;
 use sqlx::{PgPool, QueryBuilder};
+use tracing::error;
 
 use crate::models::student::{CreateStudent, Student, UpdateStudent};
 
@@ -35,16 +36,8 @@ pub async fn list_students(State(pool): State<PgPool>) -> impl IntoResponse {
     match students {
         Ok(data) => Json(data).into_response(),
         Err(err) => {
-            eprintln!("Database error: {}", err);
-
-            let error_response = ErrorResponse {
-                error: ErrorDetail {
-                    code: "STUDENTS_FETCH_FAILED",
-                    message: "Failed to fetch students",
-                },
-            };
-
-            (StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)).into_response()
+            error!(error = %err, "Failed to fetch students");
+            map_sqlx_error(&err, "STUDENTS_FETCH_FAILED", "Failed to fetch students")
         }
     }
 }
@@ -52,27 +45,10 @@ pub async fn list_students(State(pool): State<PgPool>) -> impl IntoResponse {
 pub async fn get_student(Path(id): Path<i32>, State(pool): State<PgPool>) -> impl IntoResponse {
     match fetch_student_by_id(&pool, id).await {
         Ok(student) => Json(student).into_response(),
-        Err(sqlx::Error::RowNotFound) => {
-            let error_response = ErrorResponse {
-                error: ErrorDetail {
-                    code: "STUDENT_NOT_FOUND",
-                    message: "Student not found",
-                },
-            };
-
-            (StatusCode::NOT_FOUND, Json(error_response)).into_response()
-        }
+        Err(sqlx::Error::RowNotFound) => not_found("STUDENT_NOT_FOUND", "Student not found"),
         Err(err) => {
-            eprintln!("Database error: {}", err);
-
-            let error_response = ErrorResponse {
-                error: ErrorDetail {
-                    code: "STUDENT_FETCH_FAILED",
-                    message: "Failed to fetch student",
-                },
-            };
-
-            (StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)).into_response()
+            error!(error = %err, student_id = id, "Failed to fetch student");
+            map_sqlx_error(&err, "STUDENT_FETCH_FAILED", "Failed to fetch student")
         }
     }
 }
@@ -81,11 +57,27 @@ pub async fn create_student(
     State(pool): State<PgPool>,
     Json(payload): Json<CreateStudent>,
 ) -> impl IntoResponse {
+    let name = payload.name.trim();
+    if name.is_empty() {
+        return bad_request("STUDENT_NAME_REQUIRED", "name is required");
+    }
+
+    let email = payload.email.trim();
+    if email.is_empty() || !email.contains('@') {
+        return bad_request("STUDENT_EMAIL_INVALID", "Valid email is required");
+    }
+
+    if let Some(room_id) = payload.room_id {
+        if room_id <= 0 {
+            return bad_request("STUDENT_ROOM_INVALID", "room_id must be greater than 0");
+        }
+    }
+
     let mut tx = match pool.begin().await {
         Ok(tx) => tx,
         Err(err) => {
-            eprintln!("Transaction start error: {}", err);
-            return internal_error("STUDENT_CREATE_FAILED", "Failed to create student");
+            error!(error = %err, "Failed to start create student transaction");
+            return map_sqlx_error(&err, "STUDENT_CREATE_FAILED", "Failed to create student");
         }
     };
 
@@ -96,11 +88,18 @@ pub async fn create_student(
         .filter(|value| !value.is_empty())
         .unwrap_or_else(|| "ACTIVE".to_string());
 
+    if !matches!(default_status.as_str(), "ACTIVE" | "PENDING" | "GRADUATED") {
+        return bad_request(
+            "STUDENT_STATUS_INVALID",
+            "status must be ACTIVE, PENDING, or GRADUATED",
+        );
+    }
+
     let insert_student = sqlx::query_scalar::<_, i32>(
         "INSERT INTO students (name, email, phone, department, status, avatar_url)\n         VALUES ($1, $2, $3, $4, $5, $6)\n         RETURNING id",
     )
-    .bind(payload.name.trim())
-    .bind(payload.email.trim())
+    .bind(name)
+    .bind(email)
     .bind(payload.phone.as_ref().map(|value| value.trim()).filter(|value| !value.is_empty()))
     .bind(
         payload
@@ -123,8 +122,8 @@ pub async fn create_student(
     let student_id = match insert_student {
         Ok(id) => id,
         Err(err) => {
-            eprintln!("Insert error: {}", err);
-            return internal_error("STUDENT_CREATE_FAILED", "Failed to create student");
+            error!(error = %err, "Failed to insert student");
+            return map_sqlx_error(&err, "STUDENT_CREATE_FAILED", "Failed to create student");
         }
     };
 
@@ -138,21 +137,21 @@ pub async fn create_student(
         .await;
 
         if let Err(err) = allocation_result {
-            eprintln!("Allocation insert error: {}", err);
-            return internal_error("STUDENT_CREATE_FAILED", "Failed to create student");
+            error!(error = %err, student_id = student_id, "Failed to create allocation");
+            return map_sqlx_error(&err, "STUDENT_CREATE_FAILED", "Failed to create student");
         }
     }
 
     if let Err(err) = tx.commit().await {
-        eprintln!("Transaction commit error: {}", err);
-        return internal_error("STUDENT_CREATE_FAILED", "Failed to create student");
+        error!(error = %err, "Failed to commit create student transaction");
+        return map_sqlx_error(&err, "STUDENT_CREATE_FAILED", "Failed to create student");
     }
 
     match fetch_student_by_id(&pool, student_id).await {
         Ok(student) => (StatusCode::CREATED, Json(student)).into_response(),
         Err(err) => {
-            eprintln!("Fetch created student error: {}", err);
-            internal_error("STUDENT_CREATE_FAILED", "Failed to create student")
+            error!(error = %err, student_id = student_id, "Failed to fetch created student");
+            map_sqlx_error(&err, "STUDENT_CREATE_FAILED", "Failed to create student")
         }
     }
 }
@@ -165,8 +164,8 @@ pub async fn update_student(
     let mut tx = match pool.begin().await {
         Ok(tx) => tx,
         Err(err) => {
-            eprintln!("Transaction start error: {}", err);
-            return internal_error("STUDENT_UPDATE_FAILED", "Failed to update student");
+            error!(error = %err, student_id = id, "Failed to start update transaction");
+            return map_sqlx_error(&err, "STUDENT_UPDATE_FAILED", "Failed to update student");
         }
     };
 
@@ -174,16 +173,26 @@ pub async fn update_student(
     let mut has_updates = false;
 
     if let Some(name) = payload.name.as_ref() {
-        query.push("name = ").push_bind(name.trim());
+        let trimmed = name.trim();
+        if trimmed.is_empty() {
+            return bad_request("STUDENT_NAME_REQUIRED", "name is required");
+        }
+
+        query.push("name = ").push_bind(trimmed);
         has_updates = true;
     }
 
     if let Some(email) = payload.email.as_ref() {
+        let trimmed = email.trim();
+        if trimmed.is_empty() || !trimmed.contains('@') {
+            return bad_request("STUDENT_EMAIL_INVALID", "Valid email is required");
+        }
+
         if has_updates {
             query.push(", ");
         }
 
-        query.push("email = ").push_bind(email.trim());
+        query.push("email = ").push_bind(trimmed);
         has_updates = true;
     }
 
@@ -252,8 +261,8 @@ pub async fn update_student(
             }
             Ok(_) => {}
             Err(err) => {
-                eprintln!("Update error: {}", err);
-                return internal_error("STUDENT_UPDATE_FAILED", "Failed to update student");
+                error!(error = %err, student_id = id, "Failed to update student row");
+                return map_sqlx_error(&err, "STUDENT_UPDATE_FAILED", "Failed to update student");
             }
         }
     }
@@ -261,6 +270,10 @@ pub async fn update_student(
     if let Some(room_id) = payload.room_id {
         let allocation_result = match room_id {
             Some(value) => {
+                if value <= 0 {
+                    return bad_request("STUDENT_ROOM_INVALID", "room_id must be greater than 0");
+                }
+
                 sqlx::query(
                     "INSERT INTO allocations (student_id, room_id)\n                     VALUES ($1, $2)\n                     ON CONFLICT (student_id) DO UPDATE SET room_id = EXCLUDED.room_id",
                 )
@@ -278,8 +291,8 @@ pub async fn update_student(
         };
 
         if let Err(err) = allocation_result {
-            eprintln!("Allocation update error: {}", err);
-            return internal_error("STUDENT_UPDATE_FAILED", "Failed to update student");
+            error!(error = %err, student_id = id, "Failed to update student allocation");
+            return map_sqlx_error(&err, "STUDENT_UPDATE_FAILED", "Failed to update student");
         }
     }
 
@@ -288,16 +301,16 @@ pub async fn update_student(
     }
 
     if let Err(err) = tx.commit().await {
-        eprintln!("Transaction commit error: {}", err);
-        return internal_error("STUDENT_UPDATE_FAILED", "Failed to update student");
+        error!(error = %err, student_id = id, "Failed to commit update transaction");
+        return map_sqlx_error(&err, "STUDENT_UPDATE_FAILED", "Failed to update student");
     }
 
     match fetch_student_by_id(&pool, id).await {
         Ok(student) => Json(student).into_response(),
         Err(sqlx::Error::RowNotFound) => not_found("STUDENT_NOT_FOUND", "Student not found"),
         Err(err) => {
-            eprintln!("Fetch updated student error: {}", err);
-            internal_error("STUDENT_UPDATE_FAILED", "Failed to update student")
+            error!(error = %err, student_id = id, "Failed to fetch updated student");
+            map_sqlx_error(&err, "STUDENT_UPDATE_FAILED", "Failed to update student")
         }
     }
 }
@@ -321,8 +334,8 @@ pub async fn delete_student(Path(id): Path<i32>, State(pool): State<PgPool>) -> 
             }
         }
         Err(err) => {
-            eprintln!("Delete error: {}", err);
-            internal_error("STUDENT_DELETE_FAILED", "Failed to delete student")
+            error!(error = %err, student_id = id, "Failed to delete student");
+            map_sqlx_error(&err, "STUDENT_DELETE_FAILED", "Failed to delete student")
         }
     }
 }
@@ -336,7 +349,7 @@ async fn fetch_student_by_id(pool: &PgPool, id: i32) -> Result<Student, sqlx::Er
     .await
 }
 
-fn bad_request(code: &'static str, message: &'static str) -> axum::response::Response {
+fn bad_request(code: &'static str, message: &'static str) -> Response {
     let error = ErrorResponse {
         error: ErrorDetail { code, message },
     };
@@ -344,7 +357,7 @@ fn bad_request(code: &'static str, message: &'static str) -> axum::response::Res
     (StatusCode::BAD_REQUEST, Json(error)).into_response()
 }
 
-fn not_found(code: &'static str, message: &'static str) -> axum::response::Response {
+fn not_found(code: &'static str, message: &'static str) -> Response {
     let error = ErrorResponse {
         error: ErrorDetail { code, message },
     };
@@ -352,10 +365,36 @@ fn not_found(code: &'static str, message: &'static str) -> axum::response::Respo
     (StatusCode::NOT_FOUND, Json(error)).into_response()
 }
 
-fn internal_error(code: &'static str, message: &'static str) -> axum::response::Response {
+fn service_unavailable(code: &'static str, message: &'static str) -> Response {
+    let error = ErrorResponse {
+        error: ErrorDetail { code, message },
+    };
+
+    (StatusCode::SERVICE_UNAVAILABLE, Json(error)).into_response()
+}
+
+fn internal_error(code: &'static str, message: &'static str) -> Response {
     let error = ErrorResponse {
         error: ErrorDetail { code, message },
     };
 
     (StatusCode::INTERNAL_SERVER_ERROR, Json(error)).into_response()
+}
+
+fn map_sqlx_error(err: &sqlx::Error, code: &'static str, message: &'static str) -> Response {
+    match err {
+        sqlx::Error::PoolTimedOut | sqlx::Error::PoolClosed | sqlx::Error::Io(_) => {
+            service_unavailable("DB_UNAVAILABLE", "Database temporarily unavailable")
+        }
+        sqlx::Error::Database(db_err) => match db_err.code().as_deref() {
+            Some("42P01") => {
+                service_unavailable("DB_SCHEMA_MISSING", "Database schema is not ready")
+            }
+            Some("23502") | Some("23503") | Some("23505") | Some("23514") | Some("22P02") => {
+                bad_request("INVALID_INPUT", "Invalid request data")
+            }
+            _ => internal_error(code, message),
+        },
+        _ => internal_error(code, message),
+    }
 }
