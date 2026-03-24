@@ -14,7 +14,7 @@ import { environment } from '../../../environments/environment';
 })
 
 export class Login {
-  private static readonly API_LOGIN_PATH = `${environment.apiUrl}/api/login`;
+  private readonly API_LOGIN_PATH = `${environment.apiUrl}/api/login`;
 
   private readonly fb = inject(FormBuilder);
   private readonly http = inject(HttpClient);
@@ -33,32 +33,19 @@ export class Login {
   }
 
   onSubmit(): void {
-    if (this.loginForm.invalid || this.loading) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
+    if (this.loginForm.invalid || this.loading) return;
 
     this.loading = true;
     const payload = this.loginForm.getRawValue();
 
-    timer(550) // Artificial delay to prevent loading state flickering on fast requests.
-      .pipe(
-        switchMap(() => this.http.post(Login.API_LOGIN_PATH, payload)),
-        finalize(() => {
-          // Push the loading reset to the next tick to avoid NG0100 in dev mode
-          // when finalize runs during the same change-detection turn.
-          setTimeout(() => {
-            this.loading = false;
-          });
-        }),
-      )
+    console.log('API URL:', environment.apiUrl);
+
+    this.http
+      .post(this.API_LOGIN_PATH, payload)
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']);
-        },
-        error: () => {
-          // Error toast is handled globally by toast interceptor.
-        },
+        next: () => this.router.navigate(['/dashboard']),
+        error: (err) => console.error(err),
       });
   }
 }
