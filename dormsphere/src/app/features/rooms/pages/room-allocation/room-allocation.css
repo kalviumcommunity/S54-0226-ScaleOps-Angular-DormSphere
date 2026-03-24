@@ -1,0 +1,57 @@
+.student-card--selected {
+  border-color: rgb(5 148 103);
+  background: color-mix(in srgb, rgb(5 148 103) 12%, white);
+}
+
+.assign-btn {
+  border: 1px solid rgb(5 148 103);
+  border-radius: 0.55rem;
+  background: rgb(5 148 103);
+  color: white;
+  padding: 0.38rem 0.72rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition:
+    transform 0.16s ease,
+    opacity 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.assign-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgb(4 120 87);
+}
+
+.assign-btn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.assign-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dark .student-card--selected {
+  border-color: rgb(16 185 129);
+  background: color-mix(in srgb, rgb(5 148 103) 22%, rgb(15 23 42));
+}
+
+.dark .assign-btn {
+  border-color: rgb(16 185 129);
+  background: rgb(5 150 105);
+}
+
+.dark .assign-btn:hover:not(:disabled) {
+  background: rgb(4 120 87);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assign-btn {
+    transition: none;
+  }
+
+  .assign-btn:hover:not(:disabled),
+  .assign-btn:active:not(:disabled) {
+    transform: none;
+  }
+}

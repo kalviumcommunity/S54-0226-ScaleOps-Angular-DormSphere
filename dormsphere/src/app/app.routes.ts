@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { HostelList } from './features/hostels/pages/hostel-list/hostel-list';
 import { HostelFormPage } from './features/hostels/pages/hostel-form-page/hostel-form-page';
 import { HostelDetailView } from './features/hostels/pages/hostel-detail-view/hostel-detail-view';
-import { NavigationPlaceholder } from './features/navigation/pages/navigation-placeholder/navigation-placeholder';
 import { Login } from './features/login/login';
 import { Dashboard } from './features/dashboard/pages/dashboard/dashboard';
 import { AppShell } from './features/layout/pages/app-shell/app-shell';
@@ -12,6 +11,7 @@ import { StudentDirectory } from './features/students/pages/student-directory/st
 import { StudentFormPage } from './features/students/pages/student-form-page/student-form-page';
 import { StudentProfile } from './features/students/pages/student-profile/student-profile';
 import { Maintenance } from './features/maintenance/pages/maintenance/maintenance';
+import { RoomAllocation } from './features/rooms/pages/room-allocation/room-allocation';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -33,7 +33,8 @@ export const routes: Routes = [
       { path: 'students/:id', component: StudentProfile },
       { path: 'students/:id/edit', component: StudentFormPage },
       { path: 'maintenance', component: Maintenance },
-      { path: 'reports', component: NavigationPlaceholder },
+      { path: 'room-allocation', component: RoomAllocation },
+      { path: 'reports', redirectTo: 'room-allocation', pathMatch: 'full' },
     ],
   },
   { path: '**', redirectTo: 'login' },

@@ -1,0 +1,168 @@
+<main class="px-6 py-8">
+  <div class="mx-auto w-full max-w-7xl">
+    <section class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div class="flex flex-col gap-1">
+        <h1 class="text-slate-900 text-3xl font-extrabold tracking-tight dark:text-slate-100">
+          Room Allocation
+        </h1>
+        <p class="text-slate-500 text-base dark:text-slate-300">
+          Select an unassigned student and allocate an available room in one step.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          class="interactive text-slate-700 border-slate-200 flex items-center gap-2 rounded-lg border bg-white px-4 py-2 text-sm font-semibold transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+          (click)="refresh()"
+        >
+          <span class="material-symbols-outlined text-lg">sync</span>
+          Refresh
+        </button>
+
+        @if (selectedStudent()) {
+          <button
+            type="button"
+            class="interactive rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            (click)="clearSelection()"
+          >
+            Clear Selection
+          </button>
+        }
+      </div>
+    </section>
+
+    <section class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+      @if (studentsLoading() || roomsLoading()) {
+        @for (item of [1, 2, 3]; track item) {
+          <article class="panel-surface p-4">
+            <div class="skeleton-line mb-3 h-3 w-24 rounded"></div>
+            <div class="skeleton-line mb-2 h-7 w-16 rounded"></div>
+            <div class="skeleton-line h-3 w-28 rounded"></div>
+          </article>
+        }
+      } @else {
+        <article class="panel-surface p-4">
+          <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-300">Unassigned Students</p>
+          <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ summary().unassigned }}</h2>
+          <p class="text-slate-400 mt-2 text-xs dark:text-slate-300">Awaiting room mapping</p>
+        </article>
+
+        <article class="panel-surface p-4">
+          <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-300">Total Rooms</p>
+          <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ summary().rooms }}</h2>
+          <p class="text-slate-400 mt-2 text-xs dark:text-slate-300">Visible in inventory</p>
+        </article>
+
+        <article class="panel-surface p-4">
+          <p class="text-slate-500 mb-1 text-xs font-bold tracking-wider uppercase dark:text-slate-300">Available Beds</p>
+          <h2 class="text-slate-900 text-2xl font-black dark:text-slate-100">{{ summary().availableBeds }}</h2>
+          <p class="text-slate-400 mt-2 text-xs dark:text-slate-300">Across all listed rooms</p>
+        </article>
+      }
+    </section>
+
+    @if (selectedStudent(); as selected) {
+      <section class="panel-surface mb-6 flex items-center justify-between gap-4 p-4">
+        <div>
+          <p class="text-slate-500 text-xs font-bold tracking-wider uppercase dark:text-slate-300">Selected Student</p>
+          <p class="text-slate-900 mt-1 text-sm font-bold dark:text-slate-100">{{ selected.name }}</p>
+          <p class="text-slate-500 text-xs dark:text-slate-400">{{ selected.email }}</p>
+        </div>
+        <span class="status-pill status-pill--warning">Ready to assign</span>
+      </section>
+    }
+
+    @if (errorMessage(); as error) {
+      <div
+        class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-300"
+      >
+        {{ error }}
+      </div>
+    }
+
+    <section class="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <article class="panel-surface p-5">
+        <h2 class="text-slate-900 mb-4 text-lg font-bold dark:text-slate-100">Unassigned Students</h2>
+
+        <div class="max-h-130 space-y-2 overflow-auto pr-1">
+          @if (studentsLoading()) {
+            @for (item of [1, 2, 3, 4, 5]; track item) {
+              <div class="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
+                <div class="skeleton-line mb-2 h-4 w-28 rounded"></div>
+                <div class="skeleton-line h-3 w-40 rounded"></div>
+              </div>
+            }
+          } @else {
+            @for (student of unassignedStudents(); track student.id) {
+              <button
+                type="button"
+                class="w-full rounded-lg border border-slate-200 p-3 text-left transition-colors hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                [ngClass]="selectedStudentId() === student.id ? 'student-card--selected' : ''"
+                (click)="selectStudent(student.id)"
+              >
+                <p class="text-slate-900 text-sm font-semibold dark:text-slate-100">{{ student.name }}</p>
+                <p class="text-slate-500 text-xs dark:text-slate-400">{{ student.email }}</p>
+                <p class="text-slate-400 mt-1 text-xs dark:text-slate-500">{{ student.department }}</p>
+              </button>
+            }
+
+            @if (unassignedStudents().length === 0) {
+              <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300">
+                All students are currently assigned to rooms.
+              </div>
+            }
+          }
+        </div>
+      </article>
+
+      <article class="panel-surface p-5">
+        <h2 class="text-slate-900 mb-4 text-lg font-bold dark:text-slate-100">Rooms</h2>
+
+        <div class="max-h-130 space-y-2 overflow-auto pr-1">
+          @if (roomsLoading()) {
+            @for (item of [1, 2, 3, 4, 5]; track item) {
+              <div class="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
+                <div class="skeleton-line mb-2 h-4 w-24 rounded"></div>
+                <div class="skeleton-line mb-2 h-3 w-32 rounded"></div>
+                <div class="skeleton-line h-8 w-20 rounded"></div>
+              </div>
+            }
+          } @else {
+            @for (room of roomsWithAvailability(); track room.id) {
+              <div class="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
+                <p class="text-slate-900 text-sm font-semibold dark:text-slate-100">Room {{ room.number }}</p>
+                <p class="text-slate-500 text-xs dark:text-slate-400">{{ roomMeta(room.number, room.hostelName) }}</p>
+                <p class="text-slate-500 mt-1 text-xs dark:text-slate-400">
+                  Capacity: {{ room.capacity }} | Occupied: {{ room.occupied }} | Available: {{ room.availableBeds }}
+                </p>
+
+                <div class="mt-2 flex items-center justify-between gap-3">
+                  <span [class]="room.isFull ? 'status-pill status-pill--danger' : 'status-pill status-pill--success'">
+                    <span class="status-pill__dot"></span>
+                    {{ room.isFull ? 'Full' : 'Available' }}
+                  </span>
+
+                  <button
+                    type="button"
+                    class="assign-btn"
+                    [disabled]="room.isFull || !selectedStudent() || assigning()"
+                    (click)="assignToRoom(room.id)"
+                  >
+                    {{ room.isFull ? 'Full' : 'Assign' }}
+                  </button>
+                </div>
+              </div>
+            }
+
+            @if (roomsWithAvailability().length === 0) {
+              <div class="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300">
+                No rooms are available in the inventory.
+              </div>
+            }
+          }
+        </div>
+      </article>
+    </section>
+  </div>
+</main>
