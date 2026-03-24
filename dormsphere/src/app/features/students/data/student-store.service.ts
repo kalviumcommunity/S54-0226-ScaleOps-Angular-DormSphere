@@ -133,6 +133,30 @@ export class StudentStoreService {
     }
   }
 
+  async assignRoom(studentId: string, roomId: string | null): Promise<Student | undefined> {
+    this.saving.set(true);
+    this.errorMessage.set(null);
+
+    try {
+      const payload = {
+        room_id: this.toNullableNumber(roomId),
+      };
+
+      const updated = await firstValueFrom(
+        this.http.put<ApiStudent>(`${STUDENTS_API_BASE_URL}/${studentId}`, payload),
+      );
+
+      const mapped = this.toStudent(updated);
+      this.students.update((items) => items.map((student) => (student.id === studentId ? mapped : student)));
+      return mapped;
+    } catch {
+      this.errorMessage.set('Unable to update room assignment. Please try again.');
+      return undefined;
+    } finally {
+      this.saving.set(false);
+    }
+  }
+
   async deleteStudent(id: string): Promise<boolean> {
     this.errorMessage.set(null);
 
